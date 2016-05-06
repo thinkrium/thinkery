@@ -1,0 +1,5 @@
+<?php
+header('HTTP/1.0 403 Forbidden');
+?>
+
+<h1>this isn't allowed. You have attempted to access a page that you are not allowed to see</h1>

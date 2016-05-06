@@ -1,0 +1,33 @@
+
+<form   enctype="multipart/form-data"  action="<?php echo _ROOT_DIRECTORY; ?>/core/formManagement.php" method = "post" name="user_id_edit">
+  
+    <label>First Name</label>
+    <input type="text" name="first_name"  name="first_name" 
+    <?php if(isset($data['first_name'])) { ?>
+           value="<?php print $data['first_name']?>"
+    <?php } ?>
+           ></input>           
+    <label>Last Name</label>
+    <input type="text" name="last_name" 
+    <?php if(isset($data['last_name'])) { ?>
+           value="<?php print $data['last_name']?>"
+    <?php } ?>
+           ></input>
+    <label>User Email</label>
+    <input type="email" name="email"
+    <?php if(isset($data['email'])) { ?>
+           value="<?php print $data['email']?>"
+    <?php } ?>
+           ></input>
+    <label>About Me</label>
+    <textarea rows="5" cols="30" name="about"><?php if(isset($data['about'])) {print $data['about'];}?></textarea>
+    <!-- standard hidden data -->
+
+   <input type='hidden' name='!id' value="<?php print  $data['uid'] ?>"></input>
+   <input type='hidden' name='object_name' value="user"></input>
+   <input type='hidden' name='core_extended' value="core"></input>
+   <input type="hidden" name='form_name' value="user/!id/edit"></input>
+   <input type="hidden" name="redirect" value="user/view"></input>
+   <input type="hidden" name="form_key" value="<?php echo call_user_func(array('nonce', 'generateKey')); ?>"></input>   
+   <input type ="submit">Submit</input>
+</form>

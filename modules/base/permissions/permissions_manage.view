@@ -1,0 +1,67 @@
+<?php
+
+ function print_perms($args) {
+     
+    /*
+     * role_name is created by the array column
+     *
+     */
+     $role_name = array_column($args['roles'], 'role_name', 'role_id');
+
+     $existing_role_permissions = $args['existing_permissions'];
+     
+    /*
+     * this is for the $role 
+     */
+     
+    $checked = '';
+
+    foreach ($role_name as $role_id => $role) { 
+        print "<h2>" . ucfirst($role) . "</h2>";
+        foreach ($args['permissions'] as $perm) {
+            if(is_array($perm)) {
+                foreach ($perm as $key => $permission) {
+
+                    if(is_array($existing_role_permissions)) {
+                        foreach($existing_role_permissions as $existing_permission_data) {
+                            if(
+                                $permission['function'] == $existing_permission_data['permission'] 
+                                 &&
+                                $role_id == $existing_permission_data['role_id']
+                            ) {
+
+                                $checked = "checked";
+                                break ;
+                            }
+                            else  {
+                               
+                              $checked = '';
+                            }
+                        }
+                    }
+                    print "<input type='checkbox' value='" . $permission['function'] 
+                        . "' name=permissions[$role_id][$role][" . $permission['function'] . "] $checked>"
+                        . ucfirst($permission['label']) . " </input>";
+                    print "</br>";
+                }            
+            }    
+        }
+    }
+
+     
+ }
+?>
+
+<form  enctype="multipart/form-data" action="<?php echo _ROOT_DIRECTORY; ?>/core/formManagement.php" method = "post" name="permissions_manage">
+
+    <?php
+    
+    print_perms($data);
+   ?>
+   <input type='hidden' name='object_name' value="permissions"></input>
+   <input type='hidden' name='core_extended' value="base"></input>
+   <input type="hidden" name='form_name' value="permissions/manage"></input>
+   <input type="hidden" name="redirect" value="permissions/manage"></input>
+   <input type="hidden" name="form_key" value="<?php echo call_user_func(array('nonce', 'generateKey')); ?>"></input>   
+   <input type ="submit">Submit</input>
+</form>

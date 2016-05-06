@@ -1,0 +1,22 @@
+#things to do
+
+
+#CONFIRM ACTION FORM [ARE YOU SURE YOU WANT TO DO THS ACTION]
+
+#make sure the error system is working in the model its not right now
+
+#permissions/manage needs to set the previously set to "checked" value before rendering the view.
+  the model sends the content to the database correctly.
+
+#permissions are almost done, they view isn't linking right now
+
+remember when deleting a user, role, or any content to delete all information in the database connecting to it
+
+#make sure to get the sql out of controller doesn't belong
+
+#pretty sure i locked in perms for literal non  tokenized urls
+
+#adjust for tokenized urls
+
+#figure out what the deal is with user_show because it only shows with no arguments but the uid 
+shows accurate every time with or with arguments

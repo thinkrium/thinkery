@@ -1,0 +1,17 @@
+<form  enctype="multipart/form-data" action="<?php echo _ROOT_DIRECTORY; ?>/core/formManagement.php" method = "post" name="roles_delete">
+
+<?php
+
+    foreach ($data as $role => $label) {
+        print "<input type='checkbox' name='role[" . $role . "]' value='" . $role . "' >" . $label . "</input>";
+    }
+?>
+    
+   
+   <input type='hidden' name='object_name' value="permissions"></input>
+   <input type='hidden' name='core_extended' value="base"></input>
+   <input type="hidden" name='form_name' value="roles/delete"></input>
+   <input type="hidden" name="redirect" value="roles/delete"></input>
+   <input type="hidden" name="form_key" value="<?php echo call_user_func(array('nonce', 'generateKey')); ?>"></input>   
+   <input value="Delete"type ="submit"></input>
+</form>

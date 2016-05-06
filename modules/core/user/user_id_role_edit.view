@@ -1,0 +1,58 @@
+<?php 
+    function print_role_select($roles) {
+
+        /*
+         * $existing_roles - role_types
+         * 
+         * $dynamic_roles - user_roles
+         */
+        
+        $existing_roles = $dynamic_roles = '';
+        
+        $checked = '';
+        
+        if(array_key_exists('existing_roles', $roles)) {
+            $existing_roles = $roles['existing_roles'];
+        }
+
+        if(array_key_exists('dynamic_roles', $roles)) {
+             $dynamic_roles = array_column($roles['dynamic_roles'], 'role_name');
+        }
+        
+        
+        foreach ($existing_roles as $role_data) {
+
+            $role_id = $role_data['role_id'];
+            $role_name = $role_data['role_name'];
+                        
+            if(is_array($dynamic_roles)) {
+                if(in_array($role_name, $dynamic_roles)) {
+                    $checked = 'checked';
+                }
+                else {
+                    $checked = '';
+                }
+
+            }
+            print "<input type='checkbox' "
+                . "name='role[$role_id][" . $role_name . "]' value='" 
+                . $role_name . "' "  . $checked . " >" . ucfirst($role_name);
+        }
+ 
+    }
+?>
+
+<form   enctype="multipart/form-data"  id="" action="<?php echo _ROOT_DIRECTORY; ?>/core/formManagement.php" method = "post" name="user_id_role_edit">
+
+   <?php    
+       print_role_select($data);
+   ?>
+    
+   <input type='hidden' name='!id' value=<?php print $data['uid'] ?> ></input>
+   <input type='hidden' name='object_name' value="user"></input>
+   <input type='hidden' name='core_extended' value="core"></input>
+   <input type="hidden" name='form_name' value="user/!id/role/edit"></input>
+   <input type="hidden" name="redirect" value="user/!id/role/edit"></input>
+   <input type="hidden" name="form_key" value="<?php echo call_user_func(array('nonce', 'generateKey')); ?>"></input>   
+   <input type ="submit">Submit</input>
+</form>

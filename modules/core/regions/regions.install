@@ -1,0 +1,13 @@
+<?php
+/*
+ * hook_install is the article install function it creates the table and only if
+ * it doesn't exist in the first place
+ */
+
+class regions_install {
+    
+    public function __construct($connection) {
+
+    }
+    
+}

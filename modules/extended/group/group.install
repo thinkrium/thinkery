@@ -1,0 +1,27 @@
+<?php
+/*
+ * hook_install is the article install function it creates the table and only if
+ * it doesn't exist in the first place
+ */
+
+class group_install {
+    //put your code here
+
+    public function __construct($connection) {
+        
+       $stmt = $connection->exec("create table if not exists groups ("
+               . "group_id int(100) primary key auto_increment,"
+               . "group_name varchar(255),"
+               . "author_id int(100)"
+               . ")");
+
+       
+       $stmt = $connection->exec("create table if not exists group_members ("
+               . "group_id int(100),"
+               . "member_id int(100),"
+               . 'primary key(group_id, member_id)'
+               . ")");
+       
+    }
+    
+}

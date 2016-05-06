@@ -1,0 +1,23 @@
+<?php
+ 
+
+function list_groups($data) {
+    
+    $groups = '';
+    
+    if(sizeof($data) > 0) {
+        foreach($data as $group) {
+            $groups .= "<a href = group/" . $group['group_id'] . ">" . $group['group_name'] . "</a>";
+        }
+    }
+    else {
+            
+        $groups = "Sorry there doesn't seem to be a group!";
+        
+    }
+    
+    return $groups;
+    
+}
+
+print list_groups($data);

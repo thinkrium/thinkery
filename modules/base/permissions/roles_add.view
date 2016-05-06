@@ -1,0 +1,12 @@
+
+<form id=""  enctype="multipart/form-data" action="<?php echo _ROOT_DIRECTORY; ?>/core/formManagement.php" method = "post" name="roles_add">
+
+   <label>Add a role</label> 
+   <input type='text' name="new_role"></input>
+   <input type='hidden' name='object_name' value="permissions"></input>
+   <input type='hidden' name='core_extended' value="base"></input>
+   <input type="hidden" name='form_name' value="roles/add"></input>
+   <input type="hidden" name="redirect" value="roles/add"></input>
+   <input type="hidden" name="form_key" value="<?php echo call_user_func(array('nonce', 'generateKey')); ?>"></input>   
+   <input type ="submit">Submit</input>
+</form>

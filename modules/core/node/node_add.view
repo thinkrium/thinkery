@@ -1,0 +1,21 @@
+
+<form  enctype="multipart/form-data" action="<?php echo _ROOT_DIRECTORY . "/core/formManagement.php"; ?>  method = "post" name="node_add">
+   <label>Title</label>
+   <input name="title" type="text"></input>
+   <label>Body</label>
+   <input name="body" type="textArea"></input>
+   <label>Password</label>
+   <input name="pass" type="text"></input>
+   <label>Confirm Password</label>
+   <input name="pass_confirmed" type="text"></input>
+   <input type ="submit">Submit</input>
+   
+    
+   <input type='hidden' name='object_name' value="node"></input>
+   <input type='hidden' name='core_extended' value="core"></input>
+   <input type="hidden" name='form_name' value="node/add"                               ></input>
+   <input type="hidden" name="redirect" value="node/types"></input>
+   <input type="hidden" name="form_key" value="<?php echo call_user_func(array('nonce', 'generateKey')); ?>"></input>   
+   <input type ="submit">Submit</input>
+</form>
+

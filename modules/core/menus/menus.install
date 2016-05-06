@@ -1,0 +1,26 @@
+<?php
+/*
+ * hook_install is the article install function it creates the table and only if
+ * it doesn't exist in the first place
+ */
+
+class menus_install {
+ 
+    public function __construct($connection) {
+        
+       $stmt = $connection->exec("create table if not exists menus ("
+               . "menu_id int(100) primary key auto_increment,"
+               . "menu_title varchar(255),"
+               . 'timestamp bigint not null'
+               . ")");
+       
+       $stmt = $connection->exec("create table if not exists menu_lists ("
+               . "menu_id int(100),"
+               . "menu_list_item varchar(255)"
+               . ")");
+       
+    }
+    
+    
+    
+}

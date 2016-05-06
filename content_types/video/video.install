@@ -1,0 +1,24 @@
+<?php
+/*
+ * hook_install is the article install function it creates the table and only if
+ * it doesn't exist in the first place
+ */
+
+class video_install {
+    
+    public function __construct($connection) {
+       $stmt = $connection->exec("create table if not exists video_type ("
+               . "video_id int(100) primary key auto_increment,"
+               . "node_title varchar(255),"
+               . "file_name varchar(255),"
+               . "node_body text,"
+               . 'file_iteration int(200),'
+               . 'timestamp bigint not null,'
+               . 'author_entity varchar(255) not null,'
+               . "author_id int(100)"
+               . ")");
+       
+    }
+    
+    
+}

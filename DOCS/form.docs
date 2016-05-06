@@ -1,0 +1,36 @@
+In the form 
+
+
+Redirects will have hidden input with the appropriate redirect as is in the url array including the proper name of the tokenized argument
+    i.e. !id - will have the <input type='hidden' name='!id' value="<?php ...print some value here... ?>"></input>
+
+the form will process the redirect url appropriately based on the token presented by the model
+
+the form_name should be present in the hidden inputs as well to reflect the <form name="same as hidden input form name">
+    i.e. <form action="some php file" method="post" name="user_add"></form> --- and then included in the form will be 
+         <input type="hidden" name="form_name" value="user/add"
+
+    in the example of a tokenized form name/input name the sample would like like
+         <form action="some php file" method="post" name="user_id_edit"></form> --- and then included in the form will be 
+         <input type="hidden" name="form_name" value="user_!id_edit"></input>
+
+    this may change in the future but it works as  a convention for now.
+
+MINIMAL VIABLE PRODUCT ...
+
+if there is a form the url array  requires the form name for validation and submission
+
+subject to change however right now it looks like this
+
+i.e 
+
+   $url['url name whatever'] = array(
+     'function' => 'name_of_function',
+     'validate' => 'name_of_function_validate',
+     'submit' => 'name_of_function_submit',
+   );
+
+should work even if the submit and validate function are named differently as long as
+the name is in the array with the key being 'validate' and 'submit'
+
+the validate function should return true if validates ok and false if fails

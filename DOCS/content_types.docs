@@ -1,0 +1,10 @@
+Content types
+
+there is likely to be an install file and in the install file there will be a class and a constructor
+
+the constructor will take in the database connection and use the injection
+
+the constructor will create table if not exists and then content type management class will add the url and its funcitonaality to 
+the url array in the controller
+
+the controller will take it from there and do its business with sorting out its functionality

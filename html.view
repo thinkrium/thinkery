@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Thinkery</title>
+        <style type='text/css' media="all">
+            @import url('http://localhost/Thinkery/styles/style.css');
+        </style>
+    </head>
+    <body>
+        <div id="container">
+           <div id="head"></div>
+        
+           <?php
+              if($page != '') {
+                  print_r($page);
+             }
+           ?>
+        </div>   
+    </body>
+</html>

@@ -1,0 +1,12 @@
+
+
+<a href ="<?PHP print _HTTPS . _SITE_URL  . _ROOT_DIRECTORY. "/user/". $data["uid"]; ?>/edit">Edit profile</a>
+<h1><?php print $data['user_name'] ?></h1>
+<h3><?php print $data['email'] ?></h3>
+
+<?php
+    if(isset($data['about'])) { 
+        print "<h3>About</h3>";        
+        print "<p>" . $data['about'] . "</p>";
+    }
+?>

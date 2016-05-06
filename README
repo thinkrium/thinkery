@@ -1,0 +1,6 @@
+Thinkery 
+
+need to adjust the controller to only allow the loginpage to happen if your not logged in... 
+right now uid == 1 can still see it
+
+$the object name in form mananagement has to reflect the name of the directory it rests in
