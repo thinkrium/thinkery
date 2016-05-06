@@ -364,7 +364,8 @@ class Controller {
                                      */
                                    
                                         if( 
-                                        $this->permissionManagement->permission_granted($parameters['function'], $key)
+                                           ($this->permissionManagement->permission_granted($parameters['function'], $key) &&
+                                            $this->session->get_uid() > 0)
                                     ) {      
                                         $return = array();
                                         $return['url'] = $key;
