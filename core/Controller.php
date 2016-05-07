@@ -40,6 +40,8 @@ class Controller {
 
     private $data;
     
+    private $renderObject;
+    
     public  $pageBuilder;
     
     
@@ -52,7 +54,8 @@ class Controller {
                                 $permissionManagement, 
                                 $errors,
                                 $fileManagement,
-                                $mediaRequirement
+                                $mediaRequirement,
+                                $render
                                 ) {
         global $page;
 
@@ -84,6 +87,7 @@ class Controller {
         /*
          * region management aquires the database dynamic regions created with variable urls
          */
+        $this->regionManagement = $regionManagmentObject;
         /*
          * the module management object iterates through the core and extended modules 
          * and instantiates the modules and then populates the 
@@ -133,7 +137,13 @@ class Controller {
          * 
          */
         $this->routePage();
-
+        
+        /*
+         * renderObject is the variable that builds the page
+         * 
+         * it holds the object that processes and displays the p
+         */
+        $this->renderObject = $render;
 
     }
     
@@ -180,7 +190,8 @@ class Controller {
      
     public function buildPage() {
 
-             
+       require_once _ABSOLUTE_ROOT . '/html.view';
+
         
     }
     
@@ -194,6 +205,7 @@ class Controller {
      * if it fails it will return false
      */
     public function get_literal_url($correct_url, $url_array) {
+        
         /*
          *  initiate at false only to return an established array 
          */
@@ -201,6 +213,7 @@ class Controller {
         $return = false;
         
         foreach ($url_array as $url => $url_parameters) {
+            
             if(is_array($url_parameters)) {
                 foreach ($url_parameters as $urls) {
                     if(is_array($urls)) {
@@ -218,7 +231,6 @@ class Controller {
                                     $this->session->get_uid() == 0 && ($correct_url == 'user/login' || $correct_url == 'user/register')    
 
                                   ) {      
-//                                     exit(print_r($correct_url, true));
                                     $return = array();
                                     $return['url'] = $key;
                                     $return['parameters'] = $parameters;
@@ -230,6 +242,7 @@ class Controller {
                 }
             }
         }
+        
         return $return;
     }
     
@@ -439,52 +452,16 @@ class Controller {
         
         $GLOBALS['page'] = array();
                 
-        $urls = $this->moduleManagement->getUrlArray();
-        
-        /*
-         * check to see if the exact url matches in the url array
-         * if it does then return the url array for processing
-         * 
-         */
-        
-        /*
-         * look for the literal url
-         */
-        $object = $this->get_literal_url($this->url, $urls);
+        $urls = $this->regionManagement->getUrlArray();
 
-        /*
-         * if the literal url fails then tokenize the url and process the 
-         * parameters 
-         */
-
-        
-        if(!$object) {
-            $object = $this->get_tokenized_url($this->url, $urls);
-        }
-        
-        /*
-         * build all the regions
-         */
-        $this->get_regions($this->url, $urls);
-
-        
-        /*
-         * argumentKeys are the values of the array extraction
-         * 
-         */
-        
-        
-        $argumentKeys = [];
-        
         /*
          * 
          * if the size of this->arguments is equal to 0 or as in 
          * no arguments are passed it is the home page
          * 
          */
-        
         if(sizeof($this->arguments) ==  0) { 
-            
+
             $this->create_home_page();
         }
         
@@ -496,14 +473,35 @@ class Controller {
         
         else {
             
-       //     $this->iterate_through_modules($urls, $current_perms);
-        }
-    
-   
+            /*
+             * check to see if the exact url matches in the url array
+             * if it does then return the url array for processing
+             * 
+             */
         
+            /*
+             * look for the literal url
+             */
+            $object = $this->get_literal_url($this->url, $urls);
+
+            /*
+             * if the literal url fails then tokenize the url and process the 
+             * parameters 
+             */
+
+        
+            if(!$object) {
+                $object = $this->get_tokenized_url($this->url, $urls);
+            }
+        
+            /*
+             * build all the regions
+             */
+            $this->get_regions($this->url, $urls);
+
+        }
     return 0;
     }
-    
   
     /*
      * funct is the parameter that holds all that content
@@ -557,8 +555,6 @@ class Controller {
         $GLOBALS['page'][$region] = ob_get_contents();
 
     }
-
-    
 
    /*
     * create_home_page  creates the front page ... just as it says

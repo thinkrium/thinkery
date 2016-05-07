@@ -9,6 +9,7 @@
 ob_start();
 
 session_start();
+
 /*
  * include the bootstrap file for all page loading needs
  */
@@ -142,7 +143,14 @@ $mediaRequirements = new mediaRequirements();
  * 
  */
 
+/*
+ * build the render object right here 
+ * this file includes the render system and is called in the controller
+ */
 
+require_once 'render.php';
+
+$renderObject = new render();
 
 require_once 'Controller.php';
 
@@ -160,7 +168,8 @@ $controller = new Controller( $dbConnection,
                               $permissionManagement, 
                               $error, 
                               $fileManagement,
-                              $mediaRequirements           
+                              $mediaRequirements,
+                              $renderObject
                     );
 
 

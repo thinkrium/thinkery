@@ -18,6 +18,8 @@
     
     private $error;
     
+    private $region_urls;
+    
     public function __construct($connection, $moduleManagement, $session_object, $error_obect) {
         
         $this->connection = $connection;
@@ -28,8 +30,19 @@
         
         $this->error = $error_obect;
         
+        $this->get_module_management_urls();
+        
+        
     }
-    
+
+    public function get_module_management_urls() {
+        $this->region_urls = $this->module_management->getUrlArray();
+    }    
+  
+    public function getUrlArray() {
+       return $this->region_urls;  
+    }
+  
     public function dynamicRegionAdd($params) {
         
         $url = array();

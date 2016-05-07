@@ -12,7 +12,7 @@
         
            <?php
               if($page != '') {
-                  print_r($page);
+                  exit(print_r($GLOBALS['page'],true));
              }
            ?>
         </div>   
