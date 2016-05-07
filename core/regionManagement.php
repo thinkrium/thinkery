@@ -20,6 +20,8 @@
     
     private $region_urls;
     
+    private $condensed_urls;
+    
     public function __construct($connection, $moduleManagement, $session_object, $error_obect) {
         
         $this->connection = $connection;
@@ -32,7 +34,7 @@
         
         $this->get_module_management_urls();
         
-        
+        $this->condense_url_array();
     }
 
     public function get_module_management_urls() {
@@ -40,9 +42,21 @@
     }    
   
     public function getUrlArray() {
-       return $this->region_urls;  
+       return $this->condensed_urls;  
     }
   
+    public function condense_url_array() {
+        
+        foreach ($this->region_urls as $urls) {
+            if(is_array($urls)) {
+                foreach ($urls as $url) {
+                    $this->condensed_urls[] = $url;
+                }
+            }   
+        }
+        
+    }
+    
     public function dynamicRegionAdd($params) {
         
         $url = array();

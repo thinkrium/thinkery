@@ -214,31 +214,25 @@ class Controller {
         
         foreach ($url_array as $url => $url_parameters) {
             
-            if(is_array($url_parameters)) {
-                foreach ($url_parameters as $urls) {
-                    if(is_array($urls)) {
-                        foreach ($urls as $key => $parameters) {
-                            if($correct_url == $key && $key != '*') {
-                                if( 
-                                   (
-                                     ($this->permissionManagement->permission_granted($parameters['function'], $key) &&
-                                        $this->session->get_uid() > 0) &&
-                                         $correct_url != 'user/login' && $correct_url != 'user/register'
-                                     )
+            if($correct_url == $url && $url != '*') {
+                if( 
+                    (
+                        ($this->permissionManagement->permission_granted($parameters['function'], $url) &&
+                        $this->session->get_uid() > 0) &&
+                        
+                        $correct_url != 'user/login' && $correct_url != 'user/register'
+                    )
                                         
-                                        ||
+                        ||
                                       
-                                    $this->session->get_uid() == 0 && ($correct_url == 'user/login' || $correct_url == 'user/register')    
+                    $this->session->get_uid() == 0 && ($correct_url == 'user/login' || $correct_url == 'user/register')    
+                ) {
+                    $return = array();
+                    $return['url'] = $url;
+                    $return['parameters'] = $url_parameters;
+                    $this->create_content($url_parameters);
 
-                                  ) {      
-                                    $return = array();
-                                    $return['url'] = $key;
-                                    $return['parameters'] = $parameters;
-                                    $this->create_content($parameters);
-                                }
-                            }
-                        }    
-                    }
+                    
                 }
             }
         }
@@ -271,134 +265,125 @@ class Controller {
         $return = false;
         
         foreach ($url_array as $url => $url_parameters) {
-            if(is_array($url_parameters)) {
-                foreach ($url_parameters as $urls) {
-                    if(is_array($urls)) {
-                        foreach ($urls as $key => $parameters) {
-                            if(preg_match('/!/', $key)) {
+            if(preg_match('/!/', $url)) {
 
-                                $matchingArgumentsIndex = 0;
+                $matchingArgumentsIndex = 0;
 
-                                $urlArguments = explode('/', $key);
-                                
-                                if(sizeof($this->arguments) == sizeof($urlArguments)) {
+                $urlArguments = explode('/', $url);
+
+                if(sizeof($this->arguments) == sizeof($urlArguments)) {
                                     
-                                    /*
-                                    * the url doesn't match directly but may find a supported
-                                    * tokened array for calling with parameters
-                                    * 
-                                    */
+                    /*
+                     * the url doesn't match directly but may find a supported
+                     * tokened array for calling with parameters
+                     * 
+                     */
                     
-                                    $properKeys = array_keys( preg_grep("/!/", $urlArguments));
+                    $properKeys = array_keys( preg_grep("/!/", $urlArguments));
                                     
-                                    if(sizeof($properKeys) == 0)  {
+                    if(sizeof($properKeys) == 0)  {
 
                           
-                                    }     
-                                    else  {
+                    }     
+                    else  {
                                         
-                                        foreach($properKeys as $proper_key) {
+                        foreach($properKeys as $proper_key) {
                                  
-                                            $argumentKeys[$proper_key] = $proper_key;
-                                        }   
-                                    }
-
-                                /*
-                                 * check for the iteration of the argument array 
-                                 * if the the key isn't in the argument key array then 
-                                 * it checks if the index of the argument url is the same as the possible array
-                                 * 
-                                 * if the array does exist then it takes the url and sends it to the paremter with keys
-                                 * and the $replacement token becomes the key and is sent into the 
-                                 * function
-                                 * 
-                                 */
-                    
-                    
-                                /*
-                                 * set up a default correctUrl to be true;
-                                 * 
-                                 * if at any point the url arguments dont match then
-                                 * change the default to false and then
-                                 * 
-                                 * escape the loop
-                                 * 
-                                 */
-                                
-                                /*
-                                 * the correct_url is a variable 
-                                 * that is validated for escaping the loop
-                                 * 
-                                 */
-                                 $correctUrl = true;
-                                 
-                                for($ind = 0; $ind < sizeof($urlArguments); $ind++) {
-
-                                /*
-                                 * is the index of the url a token
-                                 *  if so capture the token
-                                 * 
-                                 * is the argument key not a key in the array
-                                 *  then check if the same indexes match the value
-                                 */
-                                if(!array_key_exists($ind, $argumentKeys)) {
-
-                                    if($this->arguments[$ind] == $urlArguments[$ind]) {
-
-                                        $matchingArgumentsIndex++;
-                                        $correctUrl = true;
-                                    }
-                                    else {
-
-                                        $correctUrl = false;
-                                    }
-                                }
-                                else {
-                                    $matchingArgumentsIndex++;
-                                    $functionParameters[$urlArguments[$ind]] = $this->arguments[$ind];
-                                   
-                                    
-                                }
-                            
-                                if(!$correctUrl) {
-                            
-                                    /*
-                                     * leave loop if it finds an ill matching element
-                                     */
-
-                                    break;
-                                }
-                            
-                                if($matchingArgumentsIndex == sizeof($this->arguments)) {
-                                    /*
-                                     * find all the universal regions of information
-                                     * 
-                                     * 
-                                     */
-                                   
-                                        if( 
-                                           ($this->permissionManagement->permission_granted($parameters['function'], $key) &&
-                                            $this->session->get_uid() > 0)
-                                    ) {      
-                                        $return = array();
-                                        $return['url'] = $key;
-                                        $return['parameters'] = $parameters;
-                                        $this->create_content($parameters, $functionParameters);
-                                    }
-                                    
-                                }    
-                            }                    
-                        }    
-                         
-                                
-                            }
-                        }    
+                            $argumentKeys[$proper_key] = $proper_key;
+                        }   
                     }
-                } 
+
+                    /*
+                     * check for the iteration of the argument array 
+                     * if the the key isn't in the argument key array then 
+                     * it checks if the index of the argument url is the same as the possible array
+                     * 
+                     * if the array does exist then it takes the url and sends it to the paremter with keys
+                     * and the $replacement token becomes the key and is sent into the 
+                     * function
+                     * 
+                     */
+                    
+                    
+                    /*
+                     * set up a default correctUrl to be true;
+                     * 
+                     * if at any point the url arguments dont match then
+                     * change the default to false and then
+                     * 
+                     * escape the loop
+                     * 
+                     */
+                                
+                    /*
+                     * the correct_url is a variable 
+                     * that is validated for escaping the loop
+                     * 
+                     */
+                    $correctUrl = true;
+                                 
+                    for($ind = 0; $ind < sizeof($urlArguments); $ind++) {
+
+                        /*
+                         * is the index of the url a token
+                         *  if so capture the token
+                         * 
+                         * is the argument key not a key in the array
+                         *  then check if the same indexes match the value
+                         */
+                         
+                        if(!array_key_exists($ind, $argumentKeys)) {
+
+                            if($this->arguments[$ind] == $urlArguments[$ind]) {
+
+                                $matchingArgumentsIndex++;
+                                $correctUrl = true;
+                            }
+                            else {
+
+                                $correctUrl = false;
+                            }
+                        }
+                        else {
+                            $matchingArgumentsIndex++;
+                            $functionParameters[$urlArguments[$ind]] = $this->arguments[$ind];
+                                   
+                                    
+                        }
+                            
+                        if(!$correctUrl) {
+                            
+                            /*
+                             * leave loop if it finds an ill matching element
+                             */
+
+                            break;
+                        }
+                            
+                        if($matchingArgumentsIndex == sizeof($this->arguments)) {
+                            /*
+                             * find all the universal regions of information
+                             * 
+                             * 
+                             */
+                                   
+                            if( 
+                                ($this->permissionManagement->permission_granted($url_parameters['function'], $key) &&
+                                    $this->session->get_uid() > 0)
+                                ) {      
+                                    
+                                $return = array();
+                                $return['url'] = $url;
+                                $return['parameters'] = $url_parameters;
+                                $this->create_content($url_parameters, $functionParameters);
+                            }    
+                        }                    
+                    }    
+                }
+            } 
                 
-            }
         }
-        
+    
         return $return;
         
         
@@ -419,28 +404,18 @@ class Controller {
         $return = false;
         
         foreach ($url_array as $url => $url_parameters) {
-            if(is_array($url_parameters)) {
-                foreach ($url_parameters as $urls) {
-                    if(is_array($urls)) {
-                        foreach ($urls as $key => $parameters) {
-                            if($key == '*') {
-                                if( 
-                                     $this->permissionManagement->permission_granted($parameters['function'], $key)
-                                  ) {      
+            if($url == '*') {
+                if( 
+                    $this->permissionManagement->permission_granted($url_parameters['function'], $url)
+                ) {      
 
-                                    $return = array();
-                                    $return['url'] = $key;
-                                    $return['parameters'] = $parameters;
-                                    $this->create_content($parameters);
-                                }
-                            }    
-                        }    
-                    }
-                } 
-                
-            }
+                    $return = array();
+                    $return['url'] = $url;
+                    $return['parameters'] = $url_parameters;
+                    $this->create_content($url_parameters);
+                }
+            }    
         }
-        
         return $return;
     }
 
@@ -453,6 +428,7 @@ class Controller {
         $GLOBALS['page'] = array();
                 
         $urls = $this->regionManagement->getUrlArray();
+        
 
         /*
          * 
