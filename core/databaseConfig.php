@@ -11,8 +11,6 @@ class databaseConfig {
      * the db_pass is $db_pass;
      */
 
-
-    
     /*
      * take in the database parameters 
      * 

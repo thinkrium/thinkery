@@ -205,28 +205,35 @@ class Controller {
      * if it fails it will return false
      */
     public function get_literal_url($correct_url, $url_array) {
-        
-        /*
-         *  initiate at false only to return an established array 
-         */
 
         $return = false;
         
-        foreach ($url_array as $url => $url_parameters) {
+        for($index = 0; $index < count($url_array); $index++) {
+            $url = key($url_array[$index]);
             
+            $function = $url_array[$index][$url]['function'];
+            
+            $url_parameters = $url_array[$index][$url];
+
+ 
             if($correct_url == $url && $url != '*') {
                 if( 
                     (
-                        ($this->permissionManagement->permission_granted($parameters['function'], $url) &&
+                        ($this->permissionManagement->permission_granted($function, $url) &&
                         $this->session->get_uid() > 0) &&
                         
                         $correct_url != 'user/login' && $correct_url != 'user/register'
                     )
                                         
                         ||
-                                      
-                    $this->session->get_uid() == 0 && ($correct_url == 'user/login' || $correct_url == 'user/register')    
+  
+                        ($correct_url == 'user/login' && $this->session->get_uid() == 0) 
+                                        
+                        ||
+  
+                        ($correct_url == 'user/register' && $this->session->get_uid() == 0) 
                 ) {
+                    
                     $return = array();
                     $return['url'] = $url;
                     $return['parameters'] = $url_parameters;
@@ -248,6 +255,10 @@ class Controller {
      * url arguments
      */
     public function get_tokenized_url($correct_url, $url_array) {
+        
+        $str = '';
+        
+        $return = false;
 
         /*
          * instantiate the arguments index
@@ -259,28 +270,38 @@ class Controller {
          */
         $functionParameters = array();
         
-        /*
-         * instantiate the return as false
-         */
-        $return = false;
-        
-        foreach ($url_array as $url => $url_parameters) {
+        for($index = 0; $index < count($url_array); $index++) {
+
+            $url = key($url_array[$index]);
+            
+            $function = $url_array[$index][$url]['function'];
+            
+            $url_parameters = $url_array[$index][$url];
+
             if(preg_match('/!/', $url)) {
+            
+                
 
                 $matchingArgumentsIndex = 0;
 
+
                 $urlArguments = explode('/', $url);
 
+                
                 if(sizeof($this->arguments) == sizeof($urlArguments)) {
-                                    
+
+                    $str .= "</br>$url";
+
+
                     /*
                      * the url doesn't match directly but may find a supported
                      * tokened array for calling with parameters
                      * 
                      */
                     
-                    $properKeys = array_keys( preg_grep("/!/", $urlArguments));
-                                    
+                    $properKeys = array_keys(preg_grep("/!/", $urlArguments));
+
+
                     if(sizeof($properKeys) == 0)  {
 
                           
@@ -321,7 +342,8 @@ class Controller {
                      * 
                      */
                     $correctUrl = true;
-                                 
+
+                    
                     for($ind = 0; $ind < sizeof($urlArguments); $ind++) {
 
                         /*
@@ -333,6 +355,7 @@ class Controller {
                          */
                          
                         if(!array_key_exists($ind, $argumentKeys)) {
+
 
                             if($this->arguments[$ind] == $urlArguments[$ind]) {
 
@@ -347,8 +370,7 @@ class Controller {
                         else {
                             $matchingArgumentsIndex++;
                             $functionParameters[$urlArguments[$ind]] = $this->arguments[$ind];
-                                   
-                                    
+                                                               
                         }
                             
                         if(!$correctUrl) {
@@ -366,15 +388,30 @@ class Controller {
                              * 
                              * 
                              */
-                                   
+
                             if( 
-                                ($this->permissionManagement->permission_granted($url_parameters['function'], $key) &&
-                                    $this->session->get_uid() > 0)
+                                  (
+                                    ($this->permissionManagement->permission_granted($function, $url) &&
+                                     $this->session->get_uid() > 0) &&
+                        
+                                      $correct_url != 'user/login' && $correct_url != 'user/register'
+                                  )
+                                        
+                                 ||
+  
+                                 ($correct_url == 'user/login' && $this->session->get_uid() == 0) 
+                                         
+                                  ||
+  
+                                  ($correct_url == 'user/register' && $this->session->get_uid() == 0) 
+
                                 ) {      
-                                    
+
+                                
                                 $return = array();
                                 $return['url'] = $url;
                                 $return['parameters'] = $url_parameters;
+
                                 $this->create_content($url_parameters, $functionParameters);
                             }    
                         }                    
@@ -383,7 +420,7 @@ class Controller {
             } 
                 
         }
-    
+            
         return $return;
         
         
@@ -402,11 +439,17 @@ class Controller {
          *  initiate at false only to return an established array 
          */
         $return = false;
-        
-        foreach ($url_array as $url => $url_parameters) {
+
+        for($index = 0; $index < count($url_array); $index++) {
+            $url = key($url_array[$index]);
+            
+            $function = $url_array[$index][$url]['function'];
+            
+            $url_parameters = $url_array[$index][$url];
+
             if($url == '*') {
                 if( 
-                    $this->permissionManagement->permission_granted($url_parameters['function'], $url)
+                    $this->permissionManagement->permission_granted($function, $url)
                 ) {      
 
                     $return = array();
@@ -415,7 +458,7 @@ class Controller {
                     $this->create_content($url_parameters);
                 }
             }    
-        }
+       }
         return $return;
     }
 
