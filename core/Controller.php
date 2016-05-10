@@ -205,7 +205,7 @@ class Controller {
      * if it fails it will return false
      */
     public function get_literal_url($correct_url, $url_array) {
-
+        
         $return = false;
         
         for($index = 0; $index < count($url_array); $index++) {

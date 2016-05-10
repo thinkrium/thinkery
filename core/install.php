@@ -212,10 +212,16 @@ class install {
 
         
        $stmt = $this->db_connection->exec("create table if not exists regions ("
-               . "regions_id int(100) primary key auto_increment,"
+               . "url varchar(255) not null,"
+               . "region_id int(100) primary key auto_increment,"
                . "region_title varchar(255),"
+               . "region_location varchar(255),"               
+               . "region_function varchar(255),"
+               . "region_validate varchar(255),"
+               . "region_submit varchar(255),"
+               . "region_object varchar(255),"               
                . 'position_index int(100) not null check (position_index >= 0),'
-               . 'timestamp bigint not null'
+               . 'timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP'
                . ")");
                
         

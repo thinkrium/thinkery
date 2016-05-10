@@ -10,7 +10,7 @@ class databaseConfig {
      * 
      * the db_pass is $db_pass;
      */
-
+    
     /*
      * take in the database parameters 
      * 
@@ -31,6 +31,9 @@ class databaseConfig {
         
         try {
             $databaseConnection = new PDO($connectionQuery, $this->db_owner, $this->db_pass);
+            
+            $databaseConnection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
             return $databaseConnection;
         }
         catch (PDOException $e) {
