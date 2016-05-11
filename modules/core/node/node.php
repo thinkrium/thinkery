@@ -46,7 +46,7 @@ class node {
         $url[] = array('node' => array(
             'object' => __CLASS__,
             'location' => __DIR__,
-            'region' => '',
+            'region' => 'node',
             'view' => 'node.view',
             'function' => 'node_view',
             )
@@ -55,7 +55,7 @@ class node {
         $url[] = array('node/add' => array(
             'object' => __CLASS__,
             'location' => __DIR__,
-            'region' => '',
+            'region' => 'node_add',
             'view' => 'node_add.view',
             'function' => 'node_add',
             'validate' => 'node_add_validate',
@@ -67,7 +67,7 @@ class node {
         $url[] = array('node/types' => array(
             'object' => __CLASS__,
             'location' => __DIR__,
-            'region' => '',
+            'region' => 'node_types',
             'view' => 'node_types.view',
             'function' => 'node_types',
             )
@@ -76,7 +76,7 @@ class node {
         $url[] = array('node/type/add' => array(
             'object' => __CLASS__,
             'location' => __DIR__,
-            'region' => '',
+            'region' => 'node_type_add',
             'view' => 'node_type_add.view',
             'function' => 'node_type_add',
             'validate' => 'node_type_add_validate',

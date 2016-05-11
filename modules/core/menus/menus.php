@@ -70,7 +70,7 @@ class menus {
        $url[] = array( 'menus' => array(
             'object' => __CLASS__,
             'location' => __DIR__,
-            'region' => '',
+            'region' => 'menus',
             'function' => 'menus_show',
             'view' => 'menus_show.view',
            )
@@ -79,7 +79,7 @@ class menus {
        $url[] = array( 'menu/add' => array(
             'object' => __CLASS__,
             'location' => __DIR__,
-            'region' => '',
+            'region' => 'menu_add',
             'function' => 'menu_add',
             'validate' => 'menu_add_validate',
             'submit' => 'menu_add_submit',

@@ -37,7 +37,7 @@ class video {
         $url[] = array('video/list' => array(
             'object' => __CLASS__,
             'location' => __DIR__,
-            'region' => '',
+            'region' => 'video_list',
             'view' => 'video_list.view',
             'function' => 'video_list',
             )
@@ -47,7 +47,7 @@ class video {
         $url[] = array( '!entity_name/!entity_id/video/list' => array(
             'object' => __CLASS__,
             'location' => __DIR__,
-            'region' => '',
+            'region' => 'entity_video_list',
             'view' => 'entity_name_entity_id_video_list.view',
             'function' => 'entity_name_entity_id_video_list',
             )
@@ -56,7 +56,7 @@ class video {
         $url[] = array('!entity_name/!entity_id/video/add' => array(
             'object' => __CLASS__,
             'location' => __DIR__,
-            'region' => '',
+            'region' => 'entity_video_add',
             'view' => 'entity_name_entity_id_video_add.view',
             'function' => 'entity_name_entity_id_video_add',
             'submit' => 'entity_name_entity_id_video_add_submit',

@@ -88,89 +88,140 @@
      */
     public function instantiate_db_regions() {
         
-        
-       $regions_size = count($this->condensed_url_code);
-       
-       $size_query = "select count(region_id) from regions";
-       
-       $insert_regions_query = 'insert into regions (region_title, region_location, region_function, "
-               . " region_validate, region_submit, region_object, position_index
-               ") values (:region_title, :region_location, :region_function, "
-               . " :region_validate, :region_submit, :region_object, :position_index)';
-       
-       $stmt = $this->connection->prepare($size_query);
+        $region_parameters = array(); 
 
-       $stmt->execute();
+        $region_parameters['region_title'] = '';                        
        
-       $region_in_db = (int)$stmt->fetch(PDO::FETCH_COLUMN);
+        $region_parameters['region_object'] = '';                        
        
-       if($region_in_db != $regions_size) {
-           
-           try {
-               $this->connection->query("delete * from regions");
+        $region_parameters['region_location'] = '';                        
+        
+        $region_parameters['region_function'] = '';                        
+        
+        $region_parameters['region_view'] = '';                        
+        
+        $region_parameters['region_validate'] = '';                        
+        
+        $region_parameters['region_submit'] = '';                        
+                        
+        
+        $regions_size = count($this->condensed_url_code);
+        
+        $size_query = "select count(region_id) from regions";
+
+//               , , position_index//    
+        
+        $insert_regions_query = 'insert into regions (url, region_title,'
+                . ' region_location, region_object, region_view, region_function, '
+                . ' region_validate, region_submit, position_index) '
+                . ''
+                . 'values '
+                . ''
+                . '(:url, :region_title, :region_location, :region_object, :region_view, '
+                . ':region_function, :region_validate, :region_submit, :position_index)';
+        
+        $stmt = $this->connection->prepare($size_query);
+
+        $stmt->execute();
+    
+        $region_in_db = (int)$stmt->fetch(PDO::FETCH_COLUMN);
+       
+        if($region_in_db != $regions_size) {
+
+            try {
+               $this->connection->query("truncate regions");
                
-               $this->connection->beginTransaction();
+                $this->connection->beginTransaction();
        
                 foreach($this->condensed_url_code as $condensed_urls) {
+                    $url = key($condensed_urls);
  
                     $stmt = $this->connection->prepare($insert_regions_query);
              
-                    if(isset($condensed_urls['regions'])) {
-                        $stmt->bindValue(":regions_title", 'test');
-                        
+                    if(isset($condensed_urls[$url]['region'])) {
+                        $region_parameters['region_title'] = $condensed_urls[$url]['region'];                        
                     }
                     else {
-                        
-                    }
-             
-                    if(isset($condensed_urls['regions'])) {
-                        $stmt->bindValue(":regions_location", 'test');
-                        
-                    }
-                    else {
-                        
-                    }
-             
-             
-                    if(isset($condensed_urls['regions'])) {
-                        $stmt->bindValue(":regions_function", 'test');
-                        
-                    }
-                    else {
-                        
-                    }
-             
-                    if(isset($condensed_urls['regions'])) {
-                        $stmt->bindValue(":regions_validate", 'test');
-                        
-                    }
-                    else {
+                        $region_parameters['region_title'] = null;                        
                         
                     }
 
-                                 
-                    if(isset($condensed_urls['regions'])) {
-                        $stmt->bindValue(":regions_title", 'test');
+                    if(isset($condensed_urls[$url]['location'])) {
+                        $region_parameters['region_location'] = $condensed_urls[$url]['location'];                        
                         
                     }
                     else {
+                        $region_parameters['region_location'] = null;                        
                         
                     }
              
-                    if(isset($condensed_urls['regions'])) {
-                        $stmt->bindValue(":regions_title", 'test');
+                    if(isset($condensed_urls[$url]['object'])) {
+                        $region_parameters['region_object'] = $condensed_urls[$url]['object'];                        
                         
                     }
                     else {
+                        $region_parameters['region_object'] = null;                        
                         
                     }
+             
+                    if(isset($condensed_urls[$url]['view'])) {
+                        $region_parameters['region_view'] = $condensed_urls[$url]['view'];                        
+                        
+                    }
+                    else {
+                        $region_parameters['region_view'] = null;                        
+                        
+                    }
+             
+             
+                    if(isset($condensed_urls[$url]['function'])) {
+                        $region_parameters['region_function'] = $condensed_urls[$url]['function'];                        
+                        
+                    }
+                    else {
+                        $region_parameters['region_function'] = null;                        
+                        
+                    }
+             
+                    if(isset($condensed_urls[$url]['validate'])) {
+                        $region_parameters['region_validate'] = $condensed_urls[$url]['validate'];                        
+                        
+                    }
+                    else {
+                        $region_parameters['region_validate'] = null;                        
+                        
+                    }
+
+                    if(isset($condensed_urls[$url]['submit'])) {
+                        $region_parameters['region_submit'] = $condensed_urls[$url]['submit'];                        
+                        
+                    }
+                    else {
+                        $region_parameters['region_submit'] = null;                        
+                        
+                    }
+
              
 
-                    $stmt->execute();
+                    /*
+  */  
+                    
+                $stmt->bindValue(':url', $url);
+                $stmt->bindValue(':region_title', $region_parameters['region_title']);
+                $stmt->bindValue(':region_location', $region_parameters['region_location']);
+                $stmt->bindValue(':region_object', $region_parameters['region_object']);
+                $stmt->bindValue(':region_view', $region_parameters['region_view']);
+                $stmt->bindValue(':region_function', $region_parameters['region_function']);
+                $stmt->bindValue(':region_validate', $region_parameters['region_validate']);
+                $stmt->bindValue(':region_submit', $region_parameters['region_submit']);
+                $stmt->bindValue(':position_index', 0);
+
+
+                $stmt->execute();
                 }
                 
             $this->connection->commit();
-
+         
            }
            catch(PDOException $e) {
                exit(var_dump($e));

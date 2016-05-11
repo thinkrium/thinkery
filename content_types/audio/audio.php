@@ -37,7 +37,7 @@ class audio {
         $url[] = array('audio/list' => array(
             'object' => __CLASS__,
             'location' => __DIR__,
-            'region' => '',
+            'region' => 'audio_list',
             'view' => 'audio_list.view',
             'function' => 'audio_list',
             )
@@ -47,7 +47,7 @@ class audio {
         $url[] = array( '!entity_name/!entity_id/audio/list' => array(
             'object' => __CLASS__,
             'location' => __DIR__,
-            'region' => '',
+            'region' => 'entity_audio_list',
             'view' => 'entity_name_entity_id_audio_list.view',
             'function' => 'entity_name_entity_id_audio_list',
             )
@@ -56,7 +56,7 @@ class audio {
         $url[] = array( '!entity_name/!entity_id/audio/add' => array(
             'object' => __CLASS__,
             'location' => __DIR__,
-            'region' => '',
+            'region' => 'entity_audio_add',
             'view' => 'entity_name_entity_id_audio_add.view',
             'function' => 'entity_name_entity_id_audio_add',
             'submit' => 'entity_name_entity_id_audio_add_submit',

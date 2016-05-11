@@ -37,7 +37,7 @@ class group {
         $url[] = array('groups' => array(
             'object' => __CLASS__,
             'location' => __DIR__,
-            'region' => '',
+            'region' => 'groups',
             'function' => 'groups_show',
             'view' => 'groups_show.view',
             )

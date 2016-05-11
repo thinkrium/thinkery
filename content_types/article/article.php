@@ -25,7 +25,7 @@ class article {
         $url[] = array( 'article/list' => array( 
             'object' => __CLASS__,
             'location' => __DIR__,
-            'region' => '',
+            'region' => 'article_list',
             'view' => 'article_list.view',
             'function' => 'article_list',
            )  
@@ -34,7 +34,7 @@ class article {
         $url[] = array('!entity_name/!entity_id/article/list' => array(
             'object' => __CLASS__,
             'location' => __DIR__,
-            'region' => '',
+            'region' => 'entity_article_list',
             'view' => 'entity_name_entity_id_article_list.view',
             'function' => 'entity_name_entity_id_article_list',
             )
@@ -43,7 +43,7 @@ class article {
         $url[] = array('!entity_name/!entity_id/article/add' => array(
             'object' => __CLASS__,
             'location' => __DIR__,
-            'region' => '',
+            'region' => 'entity_article_add',
             'view' => 'entity_name_entity_id_article_add.view',
             'function' => 'entity_name_entity_id_article_add',
             'submit' => 'entity_name_entity_id_article_add_submit',

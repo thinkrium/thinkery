@@ -77,7 +77,7 @@ class permissions {
         $url[] = array( 'permissions/manage' => array(
             'object' => __CLASS__,
             'location' => __DIR__,
-            'region' => '',
+            'region' => 'permissions_manage',
             'function' => 'permissions_manage',
             'validate' => 'permissions_manage_validate',
             'submit' => 'permissions_manage_submit',

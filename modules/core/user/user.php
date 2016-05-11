@@ -46,7 +46,7 @@ class user {
         $url[] = array( 'user' => array(
             'object' => __CLASS__,
             'location' => __DIR__,
-            'region' => '',
+            'region' => 'user',
             'function' => 'user_show',
             'view' => 'user.view',
             )

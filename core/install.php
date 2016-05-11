@@ -216,6 +216,7 @@ class install {
                . "region_id int(100) primary key auto_increment,"
                . "region_title varchar(255),"
                . "region_location varchar(255),"               
+               . "region_view varchar(255),"               
                . "region_function varchar(255),"
                . "region_validate varchar(255),"
                . "region_submit varchar(255),"
