@@ -117,6 +117,7 @@
         
         $size_query = "select count(region_id) from regions";
         
+        
         $insert_regions_query = 'insert into regions (url, region_title,'
                 . ' region_location, region_object, region_view, region_function, '
                 . ' region_validate, region_submit, position_index) '
@@ -132,7 +133,7 @@
     
         $region_in_db = (int)$stmt->fetch(PDO::FETCH_COLUMN);
        
-        if($region_in_db != $regions_size) {
+//        if($region_in_db != $regions_size) {
 
             try {
                $this->connection->query("truncate regions");
@@ -228,7 +229,7 @@
            catch(PDOException $e) {
                exit(var_dump($e));
            }
-        }
+        //}
             
     }
         

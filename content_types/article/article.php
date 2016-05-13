@@ -30,6 +30,16 @@ class article {
             'function' => 'article_list',
            )  
         );
+        
+        $url[] = array( '*' => array( 
+            'object' => __CLASS__,
+            'location' => __DIR__,
+            'region' => 'article_list',
+            'view' => 'article_list.view',
+            'function' => 'article_list',
+           )  
+        );
+        
 
         $url[] = array('!entity_name/!entity_id/article/list' => array(
             'object' => __CLASS__,

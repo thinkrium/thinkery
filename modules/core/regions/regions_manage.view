@@ -1,13 +1,20 @@
 
-<form  enctype="multipart/form-data" action="<?php echo _ROOT_DIRECTORY . "/core/formManagement.php"; ?>  method = "post" name="node_add">
-   <label>Region</label>
-   <input name="title" type="text"></input>
-   <label>Body</label>
-   <input name="body" type="textArea"></input>
-   <label>Password</label>
-   <input name="pass" type="text"></input>
-   <label>Confirm Password</label>
-   <input name="pass_confirmed" type="text"></input>
-   <input type ="submit">Submit</input>
-</form>
 <?php
+
+/*
+ * print the form element for the region
+ */
+
+function print_regions_form_elements($regions) {
+    for($i = 0; $i < count($regions); $i++) {      
+
+      print "<br>";
+      print $regions[$i]['region_title'];
+      print "</br>";
+    
+        
+    }    
+}
+
+      
+print_regions_form_elements($data);

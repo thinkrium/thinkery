@@ -6,7 +6,7 @@
  */
 
 
-//ob_start();
+ob_start();
 
 session_start();
 
@@ -195,7 +195,7 @@ if($error->errors_exist() && $session->get_uid() > 0) {
 
     require_once _ABSOLUTE_ROOT . "/modules/base/error/display_error.view";
 
-    $GLOBALS['page']['display_errors_messages'] = ob_get_contents();
+    $GLOBALS['page']['display_errors_messages'] = ob_get_clean();
 
     $error->clear_errors();    
 
@@ -205,7 +205,7 @@ else if($error->errors_exist() && $session->get_uid() == 0) {
     $logged_errors = $_SESSION['anonymous_user_errors'];
     require_once _ABSOLUTE_ROOT . "/modules/base/error/display_error.view";
 
-    $GLOBALS['page']['display_errors_messages'] = ob_get_contents();
+    $GLOBALS['page']['display_errors_messages'] = ob_get_clean();
 
     $error->clear_errors();    
 }
@@ -218,7 +218,7 @@ else if($error->errors_exist() && $session->get_uid() == 0) {
  * 
  */
 
-ob_end_clean();
+//cob_end_clean();
    
 require_once _ABSOLUTE_ROOT . '/html.view';
 
