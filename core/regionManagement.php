@@ -43,6 +43,8 @@
         $this->condense_url_array();
         
         $this->instantiate_db_regions();
+        
+        $this->set_condensed_url_db();
     }
 
     /*
@@ -54,14 +56,20 @@
     }    
     
     public function set_condensed_url_db() {
-        
+       $stmt = $this->connection->prepare('select * from regions');   
+
+       $stmt->execute();
+       
+       $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+       
+       $this->condensed_url_db = $results;
     }
   
     /*
      * returns the url array for processing in the router
      */
     public function getUrlArray() {
-       return $this->condensed_url_code;  
+       return $this->condensed_url_db;  
     }
   
     /*
@@ -108,8 +116,6 @@
         $regions_size = count($this->condensed_url_code);
         
         $size_query = "select count(region_id) from regions";
-
-//               , , position_index//    
         
         $insert_regions_query = 'insert into regions (url, region_title,'
                 . ' region_location, region_object, region_view, region_function, '
@@ -201,11 +207,7 @@
                         
                     }
 
-             
-
-                    /*
-  */  
-                    
+                                 
                 $stmt->bindValue(':url', $url);
                 $stmt->bindValue(':region_title', $region_parameters['region_title']);
                 $stmt->bindValue(':region_location', $region_parameters['region_location']);

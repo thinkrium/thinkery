@@ -205,15 +205,16 @@ class Controller {
      * if it fails it will return false
      */
     public function get_literal_url($correct_url, $url_array) {
-        
+
+//exit(var_dump($url_array));        
         $return = false;
         
         for($index = 0; $index < count($url_array); $index++) {
-            $url = key($url_array[$index]);
+            $url = $url_array[$index]['url'];
             
-            $function = $url_array[$index][$url]['function'];
+            $function = $url_array[$index]['region_function'];
             
-            $url_parameters = $url_array[$index][$url];
+            $url_parameters = $url_array[$index];
 
  
             if($correct_url == $url && $url != '*') {
@@ -255,7 +256,7 @@ class Controller {
      * url arguments
      */
     public function get_tokenized_url($correct_url, $url_array) {
-        
+
         $str = '';
         
         $return = false;
@@ -271,12 +272,11 @@ class Controller {
         $functionParameters = array();
         
         for($index = 0; $index < count($url_array); $index++) {
-
-            $url = key($url_array[$index]);
+            $url = $url_array[$index]['url'];
             
-            $function = $url_array[$index][$url]['function'];
+            $function = $url_array[$index]['region_function'];
             
-            $url_parameters = $url_array[$index][$url];
+            $url_parameters = $url_array[$index];
 
             if(preg_match('/!/', $url)) {
             
@@ -383,6 +383,7 @@ class Controller {
                         }
                             
                         if($matchingArgumentsIndex == sizeof($this->arguments)) {
+
                             /*
                              * find all the universal regions of information
                              * 
@@ -441,11 +442,11 @@ class Controller {
         $return = false;
 
         for($index = 0; $index < count($url_array); $index++) {
-            $url = key($url_array[$index]);
+            $url = $url_array[$index]['url'];
             
-            $function = $url_array[$index][$url]['function'];
+            $function = $url_array[$index]['region_function'];
             
-            $url_parameters = $url_array[$index][$url];
+            $url_parameters = $url_array[$index];
 
             if($url == '*') {
                 if( 
@@ -472,7 +473,7 @@ class Controller {
                 
         $urls = $this->regionManagement->getUrlArray();
         
-
+//         exit(var_dump($urls));
         /*
          * 
          * if the size of this->arguments is equal to 0 or as in 
@@ -513,6 +514,7 @@ class Controller {
                 $object = $this->get_tokenized_url($this->url, $urls);
             }
         
+//            exit(var_dump('$object'));
             /*
              * build all the regions
              */
@@ -539,15 +541,15 @@ class Controller {
         */
         
                             
-        $object = $obj['object'];
+        $object = $obj['region_object'];
                             
-        $function = $obj['function'];
+        $function = $obj['region_function'];
         
-        $location = $obj['location'];
+        $location = $obj['region_location'];
         
-        $view = $obj['view'];
+        $view = $obj['region_view'];
         
-        $region = $obj['region'];
+        $region = $obj['region_title'];
         
         
         $class = new $object($this->databaseConnection, $this->session, $this->errors);
