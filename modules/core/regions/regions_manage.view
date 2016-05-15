@@ -5,15 +5,23 @@
  * print the form element for the region
  */
 
-function print_regions_form_elements($regions) {
-    for($i = 0; $i < count($regions); $i++) {      
-
-      print "<div id='regions'>";
-      print "<span><input type='text' name='position_index[]' value='" . $regions[$i]['position_index'] . "'></input></span>";
-      print   "<span>" . $regions[$i]["region_title"] . "</span>";
-      print "</div>";
+function print_regions_form_elements($region_info) {
+    $regions = $region_info['regions'];
     
+    $region_containers = $region_info['region_containers'];
+    
+    for($cont_ind = 0; $cont_ind < count($region_containers); $cont_ind++) {      
+        print "<div id='region_containers'>";
+        print "<h1>" . $region_containers[$cont_ind]['reg_cont_title'] . "</h1>";
         
+        for($reg_ind = 0; $reg_ind < count($regions); $reg_ind++) {      
+
+           print "<div id='regions'>";
+           print "<span><input type='text' name='position_index[]' value='" . $regions[$reg_ind]['position_index'] . "'></input></span>";
+           print   "<span>" . $regions[$reg_ind]["region_title"] . "</span>";
+           print "</div>";
+        }
+       print "</div>";
     }    
 }
 

@@ -28,7 +28,17 @@ class regions_install {
                . "region_id int(100), "            
                . "reg_cont_pos_ind int(100)"
             . ")");
-                  
+    
+           $stmt = $connection->prepare('select count(reg_cont_id) from region_containers');
+           
+           $stmt->execute();
+           $results = (int)$stmt->fetch(PDO::FETCH_COLUMN);
+           
+           if($results == 0) {
+                $stmt = $connection->prepare('insert into region_containers (reg_cont_title ) values (:reg_cont_title )');
+                $stmt->bindValue(":reg_cont_title", "content");
+                $stmt->execute();
+           }      
     }
     
 }

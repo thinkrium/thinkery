@@ -96,7 +96,13 @@ class regions {
         
         $stmt->execute();
         
-        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $results['regions'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        $stmt = $this->db_connection->prepare('select * from region_containers');
+        
+        $stmt->execute();
+        
+        $results['region_containers'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
         return $results;
     }
