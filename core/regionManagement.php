@@ -114,11 +114,14 @@
                         
         
         $regions_size = count($this->condensed_url_code);
+
+        try {
         
-        $size_query = "select count(region_id) from regions";
+        
+            $select_query = "select count(region_id) from regions";
         
         
-        $insert_regions_query = 'insert into regions (url, region_title,'
+            $insert_regions_query = 'insert into regions (url, region_title,'
                 . ' region_location, region_object, region_view, region_function, '
                 . ' region_validate, region_submit, position_index) '
                 . ''
@@ -127,16 +130,14 @@
                 . '(:url, :region_title, :region_location, :region_object, :region_view, '
                 . ':region_function, :region_validate, :region_submit, :position_index)';
         
-        $stmt = $this->connection->prepare($size_query);
+            $stmt = $this->connection->prepare($select_query);
 
-        $stmt->execute();
+            $stmt->execute();
     
-        $region_in_db = (int)$stmt->fetch(PDO::FETCH_COLUMN);
-       
-//        if($region_in_db != $regions_size) {
+            $region_in_db_size = $stmt->fetch(PDO::FETCH_COLUMN);
+            
+            if($region_in_db_size == 0) {
 
-            try {
-               $this->connection->query("truncate regions");
                
                 $this->connection->beginTransaction();
        
@@ -209,27 +210,27 @@
                     }
 
                                  
-                $stmt->bindValue(':url', $url);
-                $stmt->bindValue(':region_title', $region_parameters['region_title']);
-                $stmt->bindValue(':region_location', $region_parameters['region_location']);
-                $stmt->bindValue(':region_object', $region_parameters['region_object']);
-                $stmt->bindValue(':region_view', $region_parameters['region_view']);
-                $stmt->bindValue(':region_function', $region_parameters['region_function']);
-                $stmt->bindValue(':region_validate', $region_parameters['region_validate']);
-                $stmt->bindValue(':region_submit', $region_parameters['region_submit']);
-                $stmt->bindValue(':position_index', 0);
+                    $stmt->bindValue(':url', $url);
+                    $stmt->bindValue(':region_title', $region_parameters['region_title']);
+                    $stmt->bindValue(':region_location', $region_parameters['region_location']);
+                    $stmt->bindValue(':region_object', $region_parameters['region_object']);
+                    $stmt->bindValue(':region_view', $region_parameters['region_view']);
+                    $stmt->bindValue(':region_function', $region_parameters['region_function']);
+                    $stmt->bindValue(':region_validate', $region_parameters['region_validate']);
+                    $stmt->bindValue(':region_submit', $region_parameters['region_submit']);
+                    $stmt->bindValue(':position_index', 0);
+             
 
-
-                $stmt->execute();
-                }
+                    $stmt->execute();
+                    }
                 
-            $this->connection->commit();
-         
-           }
-           catch(PDOException $e) {
-               exit(var_dump($e));
-           }
-        //}
+                $this->connection->commit();
+            }
+        }
+
+        catch(PDOException $e) {
+            exit(var_dump($e));
+        }
             
     }
         

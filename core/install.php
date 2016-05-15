@@ -45,8 +45,6 @@ class install {
         
         $this->build_node_table();
         
-        $this->build_regions_table();
-        
         $this->build_node_types_table();
 
         $this->build_error_log_table();        
@@ -75,10 +73,10 @@ class install {
                
                
     }
+    
     /*
      * 
      */
-    
     public function build_user_table() {
     
         /*
@@ -205,26 +203,6 @@ class install {
         . 'timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,'
         . "message text not null"
         . ")");
-        
-    }
-
-    public function build_regions_table() {
-
-        
-       $stmt = $this->db_connection->exec("create table if not exists regions ("
-               . "url varchar(255) not null,"
-               . "region_id int(100) primary key auto_increment,"
-               . "region_title varchar(255),"
-               . "region_location varchar(255),"               
-               . "region_view varchar(255),"               
-               . "region_function varchar(255),"
-               . "region_validate varchar(255),"
-               . "region_submit varchar(255),"
-               . "region_object varchar(255),"               
-               . 'position_index int(100) not null check (position_index >= 0),'
-               . 'timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP'
-               . ")");
-               
         
     }
 

@@ -90,6 +90,8 @@ class regions {
      * this functin is to set up the regions for a gui manipulation
      */    
     public function regions_manage() {
+        
+        
         $stmt = $this->db_connection->prepare('select * from regions');
         
         $stmt->execute();

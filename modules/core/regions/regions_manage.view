@@ -8,13 +8,27 @@
 function print_regions_form_elements($regions) {
     for($i = 0; $i < count($regions); $i++) {      
 
-      print "<br>";
-      print $regions[$i]['region_title'];
-      print "</br>";
+      print "<div id='regions'>";
+      print "<span><input type='text' name='position_index[]' value='" . $regions[$i]['position_index'] . "'></input></span>";
+      print   "<span>" . $regions[$i]["region_title"] . "</span>";
+      print "</div>";
     
         
     }    
 }
 
-      
-print_regions_form_elements($data);
+
+?>
+
+<form   enctype="multipart/form-data"  action="<?php echo _ROOT_DIRECTORY; ?>/core/formManagement.php" method = "post" name="user_login">
+<?php
+   print_regions_form_elements($data);
+?>
+   <input type="hidden" name='object_name' value="regions"></input>
+   <input type="hidden" name='core_extended' value="core"></input>
+   <input type="hidden" name='form_name' value="regions/manage"></input>
+   <input type="hidden" name="redirect" value="regions/manage"></input>
+   <input type="hidden" name="form_key" value="<?php echo call_user_func(array('nonce', 'generateKey')); ?>"></input>   
+   <input type ="submit">Submit</input>
+</form>
+

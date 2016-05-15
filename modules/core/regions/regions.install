@@ -7,7 +7,28 @@
 class regions_install {
     
     public function __construct($connection) {
-
+        
+        $connection->exec("create table if not exists regions ("
+               . "url varchar(255) not null,"
+               . "region_id int(100) primary key auto_increment,"
+               . "region_title varchar(255),"
+               . "region_location varchar(255),"               
+               . "region_view varchar(255),"               
+               . "region_function varchar(255),"
+               . "region_validate varchar(255),"
+               . "region_submit varchar(255),"
+               . "region_object varchar(255),"               
+               . 'position_index int(100) not null check (position_index >= 0),'
+               . 'timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP'
+               . ")");
+               
+    $connection->exec("create table if not exists region_containers ("
+               . "reg_cont_id int(100) primary key auto_increment,"
+               . "reg_cont_title varchar(255), "
+               . "region_id int(100), "            
+               . "reg_cont_pos_ind int(100)"
+            . ")");
+                  
     }
     
 }

@@ -207,7 +207,7 @@ class Controller {
      * 
      * if it fails it will return false
      */
-    public function get_literal_url($correct_url, &$url_array) {
+    public function get_literal_url($correct_url, $url_array) {
  
         $return = false;
         
@@ -219,6 +219,7 @@ class Controller {
             $url_parameters = $url_array[$index];
 
             if($correct_url == $url && $url != '*') {
+                    
                 if( 
                     (
                         ($this->permissionManagement->permission_granted($function, $url) &&
@@ -236,7 +237,6 @@ class Controller {
                         ($correct_url == 'user/register' && $this->session->get_uid() == 0) 
                 ) {
 
-                    
                     $return = array();
                     $return['url'] = $url;
                     $return['parameters'] = $url_parameters;
@@ -256,7 +256,7 @@ class Controller {
      * it sorts through the tokenized urls and grabs the proper arrangemeent of 
      * url arguments
      */
-    public function get_tokenized_url($correct_url, &$url_array) {
+    public function get_tokenized_url($correct_url, $url_array) {
 
         $str = '';
         
@@ -423,10 +423,7 @@ class Controller {
                 } 
             }                
         }
-            
         return $return;
-        
-        
     }
 
     /*
@@ -435,8 +432,9 @@ class Controller {
      * process any tokens and you can just go straight to the key
      * 
      * if it fails it will return false
+     * 
      */
-    public function get_regions($correct_url, &$url_array) {
+    public function get_regions($correct_url, $url_array) {
         /*
          *  initiate at false only to return an established array 
          */
@@ -533,7 +531,7 @@ class Controller {
      */
     
     public function create_content($obj, $args = null) {
- 
+         
         /*
         * the url matches the existing url and calls that array of
         * functions

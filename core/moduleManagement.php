@@ -19,6 +19,8 @@ class moduleManagement {
     private $contentTypes = [];
 
     private $moduleBase;
+    /////////////////////////////
+    public $str;
     
     private $databaseConnection;
     
@@ -50,7 +52,7 @@ class moduleManagement {
         /*
          * content_type_path holes the path for the content types
          */
-        $content_type_directory = _ABSOLUTE_ROOT . "/content_types/";
+        $content_type_directory = _ABSOLUTE_ROOT . "/content_types";
         
         
         
@@ -87,7 +89,7 @@ class moduleManagement {
         $this->instantiateModules($this->coreModules, $coreModuleDirectory, 'core');
         $this->instantiateModules($this->extendedModules, $extendedModuleDirectory, 'extended');
         $this->instantiateModules($this->contentTypes, $content_type_directory, 'content_types' );
- 
+        
     }
     
     /*
@@ -102,7 +104,9 @@ class moduleManagement {
             
                 $tempFilePath = $absolutePath . '/' . $module . '/' . $module . '.php';
 
-                $tempInstallFilePath = $absolutePath . '/' . $module . '/' . $module . '_install.php';
+                $tempInstallFilePath = $absolutePath . '/' . $module . '/' . $module . '.install';
+                
+                $this->str[] = $tempInstallFilePath;
                 
                 /*
                  * if the module has an install file then it will call the install file with the connection
@@ -116,6 +120,7 @@ class moduleManagement {
                     require_once $tempInstallFilePath;
                     
                     new $install_object($this->databaseConnection);
+                    
                 }
                 
                 
