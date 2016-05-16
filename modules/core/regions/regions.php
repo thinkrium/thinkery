@@ -33,6 +33,8 @@ class regions {
             'view' => 'regions_manage.view',
             'region' => 'regionManage',
             'function' => 'regions_manage',
+            'validate' => 'regions_manage_validate',
+            'submit'  => 'regions_manage_submit'
             )
         );
 
