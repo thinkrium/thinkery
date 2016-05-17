@@ -108,4 +108,40 @@ class regions {
         
         return $results;
     }
+    
+    public function regions_manage_validate($params) {
+        return true;
+    }
+    
+    public function regions_manage_submit($params) {
+
+        $connection = $params['connection'];
+        
+        $container_name = '';
+        
+        foreach($params as $key => $parameters) {
+
+            $found = preg_match('/[container_]\d+/', $key, $matches);
+            if($found) {
+                $index = "container_" . $matches[0];
+                
+                $container_name[] = $parameters;
+                
+            }
+        }
+        
+        $query_update = '';
+
+        foreach($container_name as $container) {
+            if($container != 'none') {
+                $sql_parameters = explode('|', $container);
+                
+                
+            }
+            
+        }
+
+         
+    }
+    
 }

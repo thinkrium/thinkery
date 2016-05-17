@@ -5,12 +5,24 @@
  * print the form element for the region
  */
 
-function print_container_select_list($containers) {
- 
+function print_container_select_list($containers, $index, $region_id, $region_title) {
+    
+    
     for($c_index = 0; $c_index < count($containers); $c_index++) {
-        print '<select>';
-        print "<option>" . $containers[$c_index]['reg_cont_title'] . "</option>";
+        
+        $container_title = $containers[$c_index]['reg_cont_title'];
+        
+        $container_id = $containers[$c_index]['reg_cont_id'];
+        
+        print '<select name="container_' . $index . '">';
+        print "<option value='none'>none</option>";
+        print "<option value='" . $container_title . "|" 
+                                . $container_id . "|"
+                                . $region_title . "|"
+                                . $region_id . "'>"
+                                . $container_title . "</option>";
         print '</select>';
+        
     }
 }
 
@@ -25,44 +37,46 @@ function print_regions_form_elements($region_info) {
         print "<div id='region_containers'>";
 
         if(isset($region_containers[$cont_ind])) {
+            
+            $container_title = $region_containers[$cont_ind]['reg_cont_title'];
 
-            print "<h3>" . $region_containers[$cont_ind]['reg_cont_title'] . "</h3>";
+            print "<h3>" . $container_title . "</h3>";
         
             for($reg_ind = 0; $reg_ind < count($regions); $reg_ind++) {      
 
-                print "<div id='regions'>";
-                print "<div>";
+               $region_id = $regions[$reg_ind]['region_id'];
             
                 if($regions[$reg_ind]['region_id'] == $region_containers[$cont_ind]['region_id']) {
+                    print "<div id='regions'>";
                     print "<input style='float: left' type='text' name='position_index[]' value='" . $regions[$reg_ind]['position_index'] . "'></input>";
                     print  $regions[$reg_ind]["region_title"];
-                    print_container_select_list($region_containers);
+                    print_container_select_list($region_containers, $reg_ind, $regions[$reg_ind]['region_id'], $regions[$reg_ind]["region_title"]);
+                    print "</div>";
                 }    
-                print "</div>";
             }    
         }
         else  {
             print "<h3>None</h3>";
             print "<div>";
             for($reg_ind = 0; $reg_ind < count($regions); $reg_ind++) {      
-
-                print "<div id='regions'>";
             
-                print "<input style='float: left'  type='text' name='position_index[]' value='" . $regions[$reg_ind]['position_index'] . "'></input>";
+                print "<div id='regions'>";
                 print  $regions[$reg_ind]["region_title"];
-                print_container_select_list($region_containers);
+                print_container_select_list($region_containers, $reg_ind, $regions[$reg_ind]['region_id'], $regions[$reg_ind]["region_title"]);
+                print "</div>";
             }    
             print "</div>";
         }
     }
     print "</div>";
+    
 }    
 
 
 
 ?>
 
-<form   enctype="multipart/form-data"  action="<?php echo _ROOT_DIRECTORY; ?>/core/formManagement.php" method = "post" name="user_login">
+<form   enctype="multipart/form-data"  action="<?php echo _ROOT_DIRECTORY; ?>/core/formManagement.php" method = "post" name="regions_manage">
 <?php
    print_regions_form_elements($data);
 ?>

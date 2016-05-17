@@ -11,6 +11,7 @@ class regions_install {
         $connection->exec("create table if not exists regions ("
                . "url varchar(255) not null,"
                . "region_id int(100) primary key auto_increment,"
+               . "reg_cont_id int(100) default 0,"
                . "region_title varchar(255),"
                . "region_location varchar(255),"               
                . "region_view varchar(255),"               
