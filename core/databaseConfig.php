@@ -11,6 +11,12 @@ class databaseConfig {
      * the db_pass is $db_pass;
      */
 
+    private $db_name = "thomedy_thunkrium";
+    
+    private $db_owner = "root";
+
+    private $db_pass = "thomedy";
+    
     /*
      * take in the database parameters 
      * 

@@ -130,16 +130,31 @@ class regions {
             }
         }
         
-        $query_update = '';
+        $query_update = 'update regions set reg_cont_id=:reg_cont_id where region_id = :region_id';
+        
+        $connection->beginTransaction();
 
         foreach($container_name as $container) {
+
+            $stmt = $connection->prepare($query_update);
+
             if($container != 'none') {
                 $sql_parameters = explode('|', $container);
+
+                $cont_id = $sql_parameters[1];
+                $reg_id = $sql_parameters[3];
+                
+                $stmt->bindValue(":reg_cont_id", $cont_id);
+                $stmt->bindValue(':region_id', $reg_id);
+                $stmt->execute();
+            }
+            else {
                 
                 
             }
             
         }
+        $connection->commit();
 
          
     }

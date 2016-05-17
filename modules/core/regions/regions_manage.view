@@ -46,7 +46,7 @@ function print_regions_form_elements($region_info) {
 
                $region_id = $regions[$reg_ind]['region_id'];
             
-                if($regions[$reg_ind]['region_id'] == $region_containers[$cont_ind]['region_id']) {
+                if($regions[$reg_ind]['reg_cont_id'] == $region_containers[$cont_ind]['reg_cont_id']) {
                     print "<div id='regions'>";
                     print "<input style='float: left' type='text' name='position_index[]' value='" . $regions[$reg_ind]['position_index'] . "'></input>";
                     print  $regions[$reg_ind]["region_title"];
