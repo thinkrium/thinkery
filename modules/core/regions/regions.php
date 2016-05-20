@@ -118,42 +118,51 @@ class regions {
         $connection = $params['connection'];
         
         $container_name = '';
-        
+         
         foreach($params as $key => $parameters) {
 
-            $found = preg_match('/[container_]\d+/', $key, $matches);
-            if($found) {
-                $index = "container_" . $matches[0];
+            $found_containers = preg_match('/[container_]\d+/', $key, $container_matches); 
+
+            $found_position = preg_match('/[position_index_]\d+/', $key, $position_index_matches); 
+
+            if($found_containers) {
+  //              $container_index = "container_" . $container_matches[0];
                 
                 $container_name[] = $parameters;
                 
             }
+
+            if($found_position) {
+//                $position_index = "position_index_" . $position_index_matches[0];
+                
+                $position_index[] = $parameters;
+                
+            }
+
         }
         
+//         exit(var_dump($position_index));
         $query_update = 'update regions set reg_cont_id=:reg_cont_id where region_id = :region_id';
         
-        $connection->beginTransaction();
-
+     $connection->beginTransaction();
+///        exit(var_dump($container_name));
         foreach($container_name as $container) {
 
             $stmt = $connection->prepare($query_update);
-
-            if($container != 'none') {
+            if(!is_array($container)) {
                 $sql_parameters = explode('|', $container);
+            }
+                
+            $cont_id = $sql_parameters[1];
+            $reg_id = $sql_parameters[3];
+                
+            $stmt->bindValue(":reg_cont_id", $cont_id);
+            $stmt->bindValue(':region_id', $reg_id);
 
-                $cont_id = $sql_parameters[1];
-                $reg_id = $sql_parameters[3];
-                
-                $stmt->bindValue(":reg_cont_id", $cont_id);
-                $stmt->bindValue(':region_id', $reg_id);
-                $stmt->execute();
-            }
-            else {
-                
-                
-            }
-            
+            $stmt->execute();            
         }
+        
+      //  foreach($position_index)
         $connection->commit();
 
          
