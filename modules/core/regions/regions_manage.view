@@ -81,7 +81,8 @@ function print_regions_form_elements($region_info) {
             ) {
                 print "</br>";
                 print "<input style='float: left' type='text' name='position_index_" . 
-                        $regions[$reg_ind]['region_id'] . "[]' value='" . $regions[$reg_ind]['position_index'] . "'></input>";
+                        $regions[$reg_ind]['region_id'] . "["
+                        . $regions[$reg_ind]['region_id'] . "]' value='" . $regions[$reg_ind]['position_index'] . "'></input>";
                 print $regions[$reg_ind]['region_title'] . " ";
                 print_container_select_list($region_containers, 
                                             $reg_ind,

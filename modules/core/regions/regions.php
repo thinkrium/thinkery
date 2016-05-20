@@ -118,22 +118,20 @@ class regions {
         $connection = $params['connection'];
         
         $container_name = '';
-         
+                 
         foreach($params as $key => $parameters) {
 
-            $found_containers = preg_match('/[container_]\d+/', $key, $container_matches); 
+            $found_containers = preg_match('/container_\d+/', $key, $container_matches); 
 
-            $found_position = preg_match('/[position_index_]\d+/', $key, $position_index_matches); 
+            $found_position = preg_match('/position_index_\d+/', $key, $position_index_matches); 
 
             if($found_containers) {
-  //              $container_index = "container_" . $container_matches[0];
                 
                 $container_name[] = $parameters;
                 
             }
 
             if($found_position) {
-//                $position_index = "position_index_" . $position_index_matches[0];
                 
                 $position_index[] = $parameters;
                 
@@ -141,13 +139,12 @@ class regions {
 
         }
         
-//         exit(var_dump($position_index));
         $query_update = 'update regions set reg_cont_id=:reg_cont_id where region_id = :region_id';
         
-     $connection->beginTransaction();
-///        exit(var_dump($container_name));
-        foreach($container_name as $container) {
+        $connection->beginTransaction();
 
+        foreach($container_name as $container) {
+ 
             $stmt = $connection->prepare($query_update);
             if(!is_array($container)) {
                 $sql_parameters = explode('|', $container);
@@ -162,10 +159,21 @@ class regions {
             $stmt->execute();            
         }
         
-      //  foreach($position_index)
-        $connection->commit();
+        $query_update = 'update regions set position_index=:position_index where region_id = :region_id';
 
-         
+        for($i = 0; $i < count($position_index); $i++) {
+            $current_region_id = key($position_index[$i]);
+            
+            $modified_position = $position_index[$i][$current_region_id];
+            
+            $stmt = $connection->prepare($query_update);
+            $stmt->bindValue(":position_index", $modified_position);
+            $stmt->bindValue(':region_id', $current_region_id);
+            
+            
+            $stmt->execute();
+            
+        }
+    $connection->commit();
     }
-    
 }
