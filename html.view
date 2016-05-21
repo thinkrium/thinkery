@@ -11,6 +11,7 @@
            <div id="head"></div>
         
            <?php
+//           exit(var_dump($page));
               if($page != '') {
                   exit(print_r($GLOBALS['page'],true));
              }

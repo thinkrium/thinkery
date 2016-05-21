@@ -94,7 +94,7 @@ class regions {
     public function regions_manage() {
         
         
-        $stmt = $this->db_connection->prepare('select * from regions');
+        $stmt = $this->db_connection->prepare('select * from regions order by position_index ASC');
         
         $stmt->execute();
         
@@ -174,6 +174,12 @@ class regions {
             $stmt->execute();
             
         }
+        
     $connection->commit();
+    }
+    
+    public function sort_position_index($region, $index) {
+        
+        
     }
 }

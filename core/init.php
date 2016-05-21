@@ -211,14 +211,3 @@ else if($error->errors_exist() && $session->get_uid() == 0) {
 }
 
 
-
-/*
- * 
- * all the output gets funneled  to the html.view.php
- * 
- */
-
-//cob_end_clean();
-   
-require_once _ABSOLUTE_ROOT . '/html.view';
-

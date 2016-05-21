@@ -191,8 +191,31 @@ class Controller {
      *
      */
      
+    /*
+     * 
+     * all the output gets funneled  to the html.view.php
+     * 
+     */
+
     public function buildPage() {
 
+        
+        
+        $stmt = $this->databaseConnection->prepare('select * from regions order by position_index ASC');
+        
+        $stmt->execute();
+        
+        $page['regions'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        $stmt = $this->databaseConnection->prepare('select * from region_containers');
+        
+        $stmt->execute();
+        
+        $page['region_containers'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+       
+       $this->renderObject->set_page($page);
+       
        require_once _ABSOLUTE_ROOT . '/html.view';
 
         
