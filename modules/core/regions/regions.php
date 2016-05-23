@@ -138,6 +138,15 @@ class regions {
             }
 
         }
+
+        $session_object = $params['session_object'];
+        
+        $connection = $params['connection'];
+        
+
+        $region_object =  new $params['object_name']($connection, $session_object);
+        
+        $region_object->sort_position_index($position_index, $region_object, null);
         
         $query_update = 'update regions set reg_cont_id=:reg_cont_id where region_id = :region_id';
         
@@ -178,8 +187,100 @@ class regions {
     $connection->commit();
     }
     
-    public function sort_position_index($region, $index) {
+    public function sort_position_index(&$region, $current_object, $smallest_number = null, $flags = null) {
         
+        if($smallest_number == null) {
+            $smallest_number = array();
+            $smallest_number[] = '';
+            
+        }
+        else {
+            $smallest_number[] = '';
+            $last_built_key = key($smallest_number[count($smallest_number) - 2]);
+        }
+        
+        $smallest_number_key = '';
+        
+        $last_small_number_key = '';
+        
+        $smallest_number_top_level = count($smallest_number) - 1;
+        
+        for($i = 0; $i < count($region); $i++) {
+            
+            if($smallest_number_key == '') {            
+
+                $smallest_number_key = key($region[$i]);
+                $last_small_number_key = $smallest_number_key;
+//                exit(var_dump($smallest_number_key, $last_small_number_key));
+
+            }
+            else {
+                $smallest_number_key = key($region[$i]);
+            }
+                  
+            $region_number_key = key($region[$i]);
+           
+            /*
+             * this is the first iteratoin of the recursive function and the smallest number array is only the first element
+             */
+            if($smallest_number[$smallest_number_top_level] == '') {
+
+                $smallest_number[$smallest_number_top_level][$smallest_number_key] = 
+                       $region[$i][$region_number_key];
+
+            }
+            
+            /*
+             * this is not the first iteration of the recursive function and the key of the input from the form
+             * is not set yet
+             */
+//           else if(!isset($smallest_number[$smallest_number_top_level][$last_small_number_key]) ///&& 
+       //          ($smallest_number[$smallest_number_top_level][$last_small_number_key] > (int)$region[$i][$region_number_key])  
+//                   ) {
+//               unset($smallest_number[$smallest_number_top_level]);
+//               $smallest_number[$smallest_number_top_level][$region_number_key] = 
+//                       $region[$i][$region_number_key];
+//                                   if($smallest_number_top_level == 0) {
+//                exit(var_dump($smallest_number, $region,  $smallest_number_key, $smallest_number_top_level));
+
+//           }
+               
+//          }
+           /*
+            * this is not the first iteration of the recursive function and the key of the input from the form element is 
+            * set and now your just comparing it to the array through the calls to the recursive function
+            */
+           else if(
+                   (isset($smallest_number[$smallest_number_top_level][$last_small_number_key]))
+                    &&
+                   ($smallest_number[$smallest_number_top_level][$last_small_number_key] > (int)$region[$i][$region_number_key])
+
+                     &&
+                   ($region_number_key != $last_built_key)
+                            
+                   )
+                  {
+
+               unset($smallest_number[$smallest_number_top_level][$last_small_number_key]);
+
+               $smallest_number[$smallest_number_top_level][$region_number_key] = 
+                       $region[$i][$region_number_key];
+           }
+
+        }
+             if($smallest_number_top_level == 2) {
+                exit(var_dump("check", $smallest_number, $region,  $smallest_number_key, $smallest_number_top_level));
+
+           }
+
+        if(count($region) != count($smallest_number)) {        
+            
+            $current_object->sort_position_index($region, $current_object, $smallest_number, 0);
+        }
+        else {
+//                exit(var_dump($smallest_number, $region,  $smallest_number_key, $smallest_number_top_level));
+            
+        }
         
     }
 }
