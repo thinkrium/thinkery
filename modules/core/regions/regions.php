@@ -187,99 +187,78 @@ class regions {
     $connection->commit();
     }
     
-    public function sort_position_index(&$region, $current_object, $smallest_number = null, $flags = null) {
+    /*
+     * calls recursively the sort algorithm which compresses and orders the position index
+     * and then returns the results;
+     */
+    public function sort_position_index($region, $current_object, $smallest_number = null, $flags = null) {
         
+        /*
+         * if its the first call to the sort position index  then the smallest_number
+         * array will be  null
+         * 
+         * if that is the case then you create the array 
+         * 
+         */
         if($smallest_number == null) {
+            
             $smallest_number = array();
-            $smallest_number[] = '';
             
+        }
+
+        /*
+         * the top level of the smallest number array will be initiated to
+         * null every time 
+         */
+        $smallest_number[] = null;
+ 
+        /*
+         * top level will be the size of the smallest number array - 1
+         */
+        $top_level = count($smallest_number) - 1;
+        
+        $off_limits = array();
+
+        if($top_level > 0) {
+            for($i = 0; $i < count($region); $i++) {
+                $off_limits_key = key($region[$i]);
+                $off_limits[$off_limits_key] = $off_limits_key;
+            }
+        }
+        
+        /*
+         * region_key will be initiated to null for testing
+         */
+        $region_number_key = null;
+
+        foreach($region as $ind => $reg) {
+
+             
+            if($region_number_key == null) {
+
+                $region_number_key = key($reg);
+                          
+                $region_number_value = $reg[$region_number_key];
+            }
+            else if(
+                    $region[$previous_number_ind][$previous_number_key] >= $reg[key($reg)]
+                ){
+                $region_number_key = key($reg);
+                $region_number_value = $reg[key($reg)];
+            }
+            
+            $previous_number_key = key($reg);
+            $previous_number_ind = $ind;
+        }
+
+        $smallest_number[$top_level][$region_number_key] = $region_number_value;
+
+        
+        if(count($smallest_number) == 4) {
+            exit(var_dump( $smallest_number, $region));
         }
         else {
-            $smallest_number[] = '';
-            $last_built_key = key($smallest_number[count($smallest_number) - 2]);
-        }
-        
-        $smallest_number_key = '';
-        
-        $last_small_number_key = '';
-        
-        $smallest_number_top_level = count($smallest_number) - 1;
-        
-        for($i = 0; $i < count($region); $i++) {
-            
-            if($smallest_number_key == '') {            
-
-                $smallest_number_key = key($region[$i]);
-                $last_small_number_key = $smallest_number_key;
-//                exit(var_dump($smallest_number_key, $last_small_number_key));
-
-            }
-            else {
-                $smallest_number_key = key($region[$i]);
-            }
-                  
-            $region_number_key = key($region[$i]);
-           
-            /*
-             * this is the first iteratoin of the recursive function and the smallest number array is only the first element
-             */
-            if($smallest_number[$smallest_number_top_level] == '') {
-
-                $smallest_number[$smallest_number_top_level][$smallest_number_key] = 
-                       $region[$i][$region_number_key];
-
-            }
-            
-            /*
-             * this is not the first iteration of the recursive function and the key of the input from the form
-             * is not set yet
-             */
-//           else if(!isset($smallest_number[$smallest_number_top_level][$last_small_number_key]) ///&& 
-       //          ($smallest_number[$smallest_number_top_level][$last_small_number_key] > (int)$region[$i][$region_number_key])  
-//                   ) {
-//               unset($smallest_number[$smallest_number_top_level]);
-//               $smallest_number[$smallest_number_top_level][$region_number_key] = 
-//                       $region[$i][$region_number_key];
-//                                   if($smallest_number_top_level == 0) {
-//                exit(var_dump($smallest_number, $region,  $smallest_number_key, $smallest_number_top_level));
-
-//           }
-               
-//          }
-           /*
-            * this is not the first iteration of the recursive function and the key of the input from the form element is 
-            * set and now your just comparing it to the array through the calls to the recursive function
-            */
-           else if(
-                   (isset($smallest_number[$smallest_number_top_level][$last_small_number_key]))
-                    &&
-                   ($smallest_number[$smallest_number_top_level][$last_small_number_key] > (int)$region[$i][$region_number_key])
-
-                     &&
-                   ($region_number_key != $last_built_key)
-                            
-                   )
-                  {
-
-               unset($smallest_number[$smallest_number_top_level][$last_small_number_key]);
-
-               $smallest_number[$smallest_number_top_level][$region_number_key] = 
-                       $region[$i][$region_number_key];
-           }
-
-        }
-             if($smallest_number_top_level == 2) {
-                exit(var_dump("check", $smallest_number, $region,  $smallest_number_key, $smallest_number_top_level));
-
-           }
-
-        if(count($region) != count($smallest_number)) {        
-            
-            $current_object->sort_position_index($region, $current_object, $smallest_number, 0);
-        }
-        else {
-//                exit(var_dump($smallest_number, $region,  $smallest_number_key, $smallest_number_top_level));
-            
+            $current_object->sort_position_index($region, $current_object, $smallest_number);
         }
         
     }
