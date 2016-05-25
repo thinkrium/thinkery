@@ -201,10 +201,10 @@ class regions {
      * 
      * $flags is future api stuff
      */
-    public function sort_position_index($region, $current_object, $smallest_number = null, $flags = null) {
+    public function sort_position_index($region, $current_object, $smallest_number = null, $stop = null) {
         
         if($smallest_number == null) {
-            $flags = $region;
+            $stop = count($region);
         }
         /*
          * if its the first call to the sort position index  then the smallest_number
@@ -243,12 +243,14 @@ class regions {
                 $region_number_key = key($reg);
                           
                 $region_number_value = $reg[$region_number_key];
+                $top_level_region = $ind;
+
             }
             else if(
                     $region[$previous_number_ind][$previous_number_key] >= $reg[key($reg)]
                 ){
                 $region_number_key = key($reg);
-                $region_number_value = $reg[key($reg)];
+                 $region_number_value = $reg[key($reg)];
                 $top_level_region = $ind;
             }
             
@@ -258,15 +260,16 @@ class regions {
 
         $smallest_number[$top_level][$region_number_key] = $region_number_value;
 
-        unset($region[$top_level_region]);
-
+        if(isset($region[$top_level_region])) {
+            unset($region[$top_level_region]);
+        } 
         
         $str = count($region);        
-        if(!isset($region)) {
-            exit(var_dump($str, $region_number_key, $region_number_value, $top_level, $smallest_number, $region, $flags));
+        if(count($smallest_number) ==  $stop) {
+            return $smallest_number;
         }
         else {
-            $current_object->sort_position_index($region, $current_object, $smallest_number, $flags);
+            $current_object->sort_position_index($region, $current_object, $smallest_number, $stop);
         }
         
     }
