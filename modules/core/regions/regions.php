@@ -144,10 +144,10 @@ class regions {
         $connection = $params['connection'];
         
 
-        $region_object =  new $params['object_name']($connection, $session_object);
-        
-        $region_object->sort_position_index($position_index, $region_object, null);
-        
+       $region_object =  new $params['object_name']($connection, $session_object);
+       
+       $region_object->sort_position_index($position_index, $region_object,  $modified_position_index);
+
         $query_update = 'update regions set reg_cont_id=:reg_cont_id where region_id = :region_id';
         
         $connection->beginTransaction();
@@ -170,10 +170,10 @@ class regions {
         
         $query_update = 'update regions set position_index=:position_index where region_id = :region_id';
 
-        for($i = 0; $i < count($position_index); $i++) {
-            $current_region_id = key($position_index[$i]);
+        for($i = 0; $i < count($modified_position_index); $i++) {
+            $current_region_id = key($modified_position_index[$i]);
             
-            $modified_position = $position_index[$i][$current_region_id];
+            $modified_position = $modified_position_index[$i][$current_region_id];
             
             $stmt = $connection->prepare($query_update);
             $stmt->bindValue(":position_index", $modified_position);
@@ -201,7 +201,7 @@ class regions {
      * 
      * $flags is future api stuff
      */
-    public function sort_position_index($region, $current_object, $smallest_number = null, $stop = null) {
+    public function sort_position_index($region, $current_object, &$smallest_number = null, $stop = null) {
         
         if($smallest_number == null) {
             $stop = count($region);
@@ -258,15 +258,16 @@ class regions {
             $previous_number_ind = $ind;
         }
 
-        $smallest_number[$top_level][$region_number_key] = $region_number_value;
+        $smallest_number[$top_level][$region_number_key] = $top_level + 1;
 
         if(isset($region[$top_level_region])) {
             unset($region[$top_level_region]);
         } 
         
-        $str = count($region);        
         if(count($smallest_number) ==  $stop) {
             return $smallest_number;
+            exit(var_dump($smallest_number));
+
         }
         else {
             $current_object->sort_position_index($region, $current_object, $smallest_number, $stop);
