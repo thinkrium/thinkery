@@ -190,9 +190,22 @@ class regions {
     /*
      * calls recursively the sort algorithm which compresses and orders the position index
      * and then returns the results;
+     * 
+     * maintains state with current object
+     * 
+     * eventually hope to remove that for future api
+     * 
+     * $region is the passed in array to sort through
+     * 
+     * $smallest_number is the array to populate
+     * 
+     * $flags is future api stuff
      */
     public function sort_position_index($region, $current_object, $smallest_number = null, $flags = null) {
         
+        if($smallest_number == null) {
+            $flags = $region;
+        }
         /*
          * if its the first call to the sort position index  then the smallest_number
          * array will be  null
@@ -217,15 +230,6 @@ class regions {
          */
         $top_level = count($smallest_number) - 1;
         
-        $off_limits = array();
-
-        if($top_level > 0) {
-            for($i = 0; $i < count($region); $i++) {
-                $off_limits_key = key($region[$i]);
-                $off_limits[$off_limits_key] = $off_limits_key;
-            }
-        }
-        
         /*
          * region_key will be initiated to null for testing
          */
@@ -245,6 +249,7 @@ class regions {
                 ){
                 $region_number_key = key($reg);
                 $region_number_value = $reg[key($reg)];
+                $top_level_region = $ind;
             }
             
             $previous_number_key = key($reg);
@@ -253,12 +258,15 @@ class regions {
 
         $smallest_number[$top_level][$region_number_key] = $region_number_value;
 
+        unset($region[$top_level_region]);
+
         
-        if(count($smallest_number) == 4) {
-            exit(var_dump( $smallest_number, $region));
+        $str = count($region);        
+        if(!isset($region)) {
+            exit(var_dump($str, $region_number_key, $region_number_value, $top_level, $smallest_number, $region, $flags));
         }
         else {
-            $current_object->sort_position_index($region, $current_object, $smallest_number);
+            $current_object->sort_position_index($region, $current_object, $smallest_number, $flags);
         }
         
     }
