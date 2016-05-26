@@ -18,7 +18,8 @@ class regions_install {
                . "region_function varchar(255),"
                . "region_validate varchar(255),"
                . "region_submit varchar(255),"
-               . "region_object varchar(255),"               
+               . "region_object varchar(255),"
+               . "enabled bool default false not null,"
                . 'position_index int(100) not null default 0 check (position_index >= 0),'
                . 'timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP'
                . ")");

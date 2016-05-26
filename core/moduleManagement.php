@@ -19,9 +19,7 @@ class moduleManagement {
     private $contentTypes = [];
 
     private $moduleBase;
-    /////////////////////////////
-    public $str;
-    
+
     private $databaseConnection;
     
     

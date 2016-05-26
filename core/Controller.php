@@ -199,28 +199,28 @@ class Controller {
 
     public function buildPage() {
 
+        $page = $GLOBALS['page'];
+        $this->renderObject->set_page($page);
         
+        $page_elements = $this->order_display();
         
-        $stmt = $this->databaseConnection->prepare('select * from regions order by position_index ASC');
-        
-        $stmt->execute();
-        
-        $page['regions'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
-        $stmt = $this->databaseConnection->prepare('select * from region_containers');
-        
-        $stmt->execute();
-        
-        $page['region_containers'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
-       
-       $this->renderObject->set_page($page);
-       
-       require_once _ABSOLUTE_ROOT . '/html.view';
-
-        
+        require_once _ABSOLUTE_ROOT . '/html.view';
     }
     
+    /*
+     * order the page elements;
+     *
+     */
+    public function order_display() {
+        
+        $page_array = $this->renderObject->get_page();
+
+        foreach($page_array as $page) {
+///           exit(var_dump($page));    
+        }
+        
+        return $page_array;
+    }
     /*
     
     /*
@@ -590,8 +590,12 @@ class Controller {
             . "  error management with 401 and 300 errors and 500 errors</h1>"
             );
         }
+        
         require_once $location . '/' .  $view;
                                 
+        $GLOBALS['page']['region_container_id_'. $obj['reg_cont_id']] = $obj['reg_cont_title'];         
+        
+        $GLOBALS['page']['position_index_'. $obj['position_index']] = $obj['position_index'];
 
         $GLOBALS['page'][$region] = ob_get_clean();
 

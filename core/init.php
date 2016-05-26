@@ -109,7 +109,6 @@ require_once 'regionManagement.php';
 $regionManagement = new regionManagement($dbConnection, $moduleManagement, $session, $error);
 
 
-
 /*
  * include the permissions management object to filter, protect, secure roles and
  * authority

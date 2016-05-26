@@ -56,12 +56,16 @@
     }    
     
     public function set_condensed_url_db() {
-       $stmt = $this->connection->prepare('select * from regions');   
+        
+       $query = 'select * from regions left join region_containers on '
+               . 'regions.reg_cont_id = region_containers.reg_cont_id where enabled = true';
+       $stmt = $this->connection->prepare($query);   
 
        $stmt->execute();
        
        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
        
+//       exit(var_dump($results));
        $this->condensed_url_db = $results;
     }
   

@@ -110,6 +110,10 @@ class regions {
     }
     
     public function regions_manage_validate($params) {
+        
+        $found_position = null;
+        
+        $position_index = null;
 
         foreach($params as $key => $parameters) {
 
@@ -123,17 +127,18 @@ class regions {
 
         }
         
-        foreach ($position_index as $key => $sub_array) {
-           $position_key = key($sub_array);
+        if($position_index != null) {
+            foreach ($position_index as $key => $sub_array) {
+                $position_key = key($sub_array);
             
-           $position_index_value = $sub_array[$position_key];
+                $position_index_value = $sub_array[$position_key];
            
-           if(!is_numeric($position_index_value)) {
-               return false;
+                if(!is_numeric($position_index_value)) {
+                    return false;
                
-           }
+                }
+            }
         }
-        
         return true;
     }
     
@@ -141,7 +146,10 @@ class regions {
 
         $connection = $params['connection'];
         
-        $container_name = '';
+        $container_name = null;
+        
+        $position_index = null;
+        
                  
         foreach($params as $key => $parameters) {
 
@@ -226,6 +234,11 @@ class regions {
      * $flags is future api stuff
      */
     public function sort_position_index($region, $current_object, &$smallest_number = null, $stop = null) {
+
+        if($region == null) {
+            
+            return false;
+        }
         
         if($smallest_number == null) {
             $stop = count($region);
