@@ -110,6 +110,30 @@ class regions {
     }
     
     public function regions_manage_validate($params) {
+
+        foreach($params as $key => $parameters) {
+
+            $found_position = preg_match('/position_index_\d+/', $key, $position_index_matches); 
+
+            if($found_position) {
+                
+                $position_index[] = $parameters;
+                
+            }
+
+        }
+        
+        foreach ($position_index as $key => $sub_array) {
+           $position_key = key($sub_array);
+            
+           $position_index_value = $sub_array[$position_key];
+           
+           if(!is_numeric($position_index_value)) {
+               return false;
+               
+           }
+        }
+        
         return true;
     }
     
@@ -274,4 +298,5 @@ class regions {
         }
         
     }
+    
 }
